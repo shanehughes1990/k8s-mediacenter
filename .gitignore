@@ -33,5 +33,6 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-# Ignore folders that start with .
-.*/
+# Ignore files/folders that start with .
+.*
+!.terraform.lock.hcl
