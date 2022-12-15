@@ -7,15 +7,11 @@ variable "provider_config" {
       cluster_ca_certificate = string
     })
     cloudflare = object({
+      email     = string
       zone_name = string
       api_token = string
     })
   })
-}
-
-variable "acme_email" {
-  sensitive = true
-  type      = string
 }
 
 variable "directory_config" {
