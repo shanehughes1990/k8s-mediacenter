@@ -70,6 +70,8 @@ variable "containers" {
       name           = string
       container_port = number
       protocol       = optional(string, "TCP")
+      # service_type   = optional(string, "ClusterIP")
+      # node_port      = optional(number, null)
       is_ingress = optional(object({
         domain_name = string
         # zone_id     = string

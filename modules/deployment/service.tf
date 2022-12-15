@@ -20,4 +20,21 @@ resource "kubernetes_service_v1" "app" {
       }
     }
   }
+
+  # TODO: This overwrites the first spec if 2 ports are specified
+  # dynamic "spec" {
+  #   for_each = flatten([for c in var.containers : c.ports != null ? c.ports : []])
+  #   content {
+  #     type = spec.value.service_type
+  #     selector = {
+  #       app = var.name
+  #     }
+  #     port {
+  #       name        = spec.value.name
+  #       port        = spec.value.container_port
+  #       target_port = spec.value.name
+  #       node_port   = spec.value.node_port
+  #     }
+  #   }
+  # }
 }
