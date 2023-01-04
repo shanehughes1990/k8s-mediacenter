@@ -1,23 +1,28 @@
 resource "kubernetes_service_v1" "app" {
-  count = length({ for c, container in var.containers : c => container if container.ports != null }) > 0 ? 1 : 0
+  for_each = merge(
+    [for c in var.containers :
+      { for s in coalesce(c.ports, []) :
+        s.name => s
+      }
+    ]...
+  )
   metadata {
     name      = var.name
     namespace = var.namespace
   }
 
   spec {
-    type = "ClusterIP"
+    type = each.value.service_type
     selector = {
       app = var.name
     }
 
-    dynamic "port" {
-      for_each = flatten([for c in var.containers : c.ports != null ? c.ports : []])
-      content {
-        name        = port.value.name
-        port        = port.value.container_port
-        target_port = port.value.name
-      }
+    port {
+      name        = each.value.name
+      port        = each.value.container_port
+      protocol    = each.value.protocol
+      target_port = each.value.name
+      node_port   = each.value.node_port
     }
   }
 

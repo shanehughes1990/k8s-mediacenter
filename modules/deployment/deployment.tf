@@ -36,6 +36,15 @@ resource "kubernetes_deployment_v1" "app" {
         service_account_name = var.service_account_name
         priority_class_name  = var.priority_class_name
 
+        dynamic "security_context" {
+          for_each = var.security_context != null ? [var.security_context] : []
+          content {
+            run_as_user  = security_context.value.run_as_user
+            run_as_group = security_context.value.run_as_group
+            fs_group     = security_context.value.fs_group
+          }
+        }
+
         dynamic "container" {
           for_each = var.containers != null ? var.containers : []
           content {
@@ -140,12 +149,13 @@ resource "kubernetes_deployment_v1" "app" {
               for_each = container.value.resources != null ? [container.value.resources] : []
               content {
                 requests = {
-                  cpu    = resources.value.requests.value.cpu
-                  memory = resources.value.requests.value.memory
+                  cpu    = resources.value.requests.cpu
+                  memory = resources.value.requests.memory
                 }
                 limits = {
-                  cpu    = resources.value.limits.value.cpu
-                  memory = resources.value.limits.value.memory
+                  cpu    = resources.value.limits.cpu
+                  memory = resources.value.limits.memory
+                  "nvidia.com/gpu" : resources.value.limits.gpu
                 }
               }
             }

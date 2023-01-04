@@ -1,0 +1,49 @@
+module "radarr" {
+  depends_on = [kubernetes_namespace_v1.namespace]
+  source     = "../../modules/deployment"
+  name       = "radarr"
+  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
+
+  containers = [{
+    name      = "radarr"
+    image_url = "linuxserver/radarr"
+    image_tag = "develop"
+
+    ports = [{
+      name           = "http"
+      container_port = 7878
+    }]
+
+    env = setunion(
+      local.common_env,
+      [
+        {
+          name  = "DOCKER_MODS"
+          value = "gilbn/theme.park:radarr"
+        },
+        {
+          name  = "TP_THEME"
+          value = "plex"
+        },
+      ]
+    )
+
+    host_directories = [
+      {
+        name       = "config"
+        host_path  = format("%s/%s", var.directory_config.appdata, "radarr")
+        mount_path = "/config"
+      },
+      {
+        name       = "movies"
+        host_path  = var.directory_config.movies
+        mount_path = "/data/media/movies"
+      },
+      {
+        name       = "downloads"
+        host_path  = var.directory_config.downloads
+        mount_path = "/data/downloads"
+      },
+    ]
+  }]
+}

@@ -1,4 +1,5 @@
 locals {
+  tls_cluster_issuer = "letsencrypt-production-issuer"
   common_env = [
     {
       name  = "PUID"

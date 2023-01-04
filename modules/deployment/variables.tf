@@ -37,6 +37,17 @@ variable "priority_class_name" {
   default = null
 }
 
+variable "security_context" {
+  description = "deployment security context"
+  type = object({
+    run_as_user  = optional(number, 1000)
+    run_as_group = optional(number, 1000)
+    fs_group     = optional(number, 2000)
+  })
+
+  default = null
+}
+
 variable "containers" {
   description = "containers to deploy in the pod"
   type = list(object({
@@ -70,31 +81,32 @@ variable "containers" {
       name           = string
       container_port = number
       protocol       = optional(string, "TCP")
-      # service_type   = optional(string, "ClusterIP")
-      # node_port      = optional(number, null)
-      is_ingress = optional(object({
-        domain_name = string
-        # zone_id     = string
-        # value       = string
-        # domain_path = optional(string)
-        # path_type   = optional(string)
-        # tls_cluster_issuer     = string
-        # enforce_https          = optional(bool)
-        # proxy_body_size        = optional(string)
-        # additional_annotations = optional(map(string))
-      }))
+      service_type   = optional(string, "ClusterIP")
+      node_port      = optional(number, null)
+      # is_ingress = optional(object({
+      #   domain_name            = string
+      #   tls_cluster_issuer     = string
+      #   zone_id                = string
+      #   value                  = string
+      #   enforce_https          = optional(bool, true)
+      #   proxy_body_size        = optional(string, "1m")
+      #   domain_path            = optional(string, "/")
+      #   path_type              = optional(string, "Prefix")
+      #   additional_annotations = optional(map(string))
+      # }))
     })))
 
     resources = optional(object({
-      requests = object({
-        cpu    = string
-        memory = string
-      })
-      limits = object({
-        cpu    = string
-        memory = string
-      })
-    }))
+      requests = optional(object({
+        cpu    = optional(string, null)
+        memory = optional(string, null)
+      }), {})
+      limits = optional(object({
+        cpu    = optional(string, null)
+        memory = optional(string, null)
+        gpu    = optional(number, null)
+      }), {})
+    }), {})
 
     liveness_probe = optional(object({
       http_get = object({
