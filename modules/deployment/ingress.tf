@@ -3,12 +3,11 @@ resource "kubernetes_ingress_v1" "app" {
   for_each   = { for p in coalesce(var.ports, []) : p.name => p if p.is_ingress != null }
 
   metadata {
-    name      = each.value.name
+    name      = format("%s-%s", var.name, each.value.name)
     namespace = var.namespace
 
     annotations = merge(
       {
-        "kubernetes.io/ingress.class"                 = "nginx"
         "cert-manager.io/cluster-issuer"              = each.value.is_ingress.tls_cluster_issuer
         "nginx.ingress.kubernetes.io/ssl-redirect"    = each.value.is_ingress.enforce_https
         "nginx.ingress.kubernetes.io/proxy-body-size" = each.value.is_ingress.proxy_body_size
@@ -18,6 +17,8 @@ resource "kubernetes_ingress_v1" "app" {
   }
 
   spec {
+    ingress_class_name = "nginx"
+
     tls {
       hosts       = each.value.is_ingress.domains.*.name
       secret_name = format("%s-%s-https", var.name, each.value.name)
