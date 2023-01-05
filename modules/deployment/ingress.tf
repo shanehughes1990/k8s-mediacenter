@@ -1,48 +1,47 @@
-# resource "kubernetes_ingress_v1" "app" {
-#   depends_on = [kubernetes_service_v1.app]
-#   for_each = merge([for c in var.containers :
-#     { for p in coalesce(c.ports, []) :
-#       p.name => p if p.is_ingress != null
-#     }
-#     ]...
-#   )
+resource "kubernetes_ingress_v1" "app" {
+  depends_on = [kubernetes_service_v1.app]
+  for_each   = { for p in coalesce(var.ports, []) : p.name => p if p.is_ingress != null }
 
-#   metadata {
-#     name      = each.value.name
-#     namespace = var.namespace
+  metadata {
+    name      = each.value.name
+    namespace = var.namespace
 
-#     annotations = merge(
-#       {
-#         "kubernetes.io/ingress.class"                 = "nginx"
-#         "cert-manager.io/cluster-issuer"              = each.value.is_ingress.tls_cluster_issuer
-#         "nginx.ingress.kubernetes.io/ssl-redirect"    = each.value.is_ingress.enforce_https
-#         "nginx.ingress.kubernetes.io/proxy-body-size" = each.value.is_ingress.proxy_body_size
-#       },
-#       each.value.is_ingress.additional_annotations
-#     )
-#   }
+    annotations = merge(
+      {
+        "kubernetes.io/ingress.class"                 = "nginx"
+        "cert-manager.io/cluster-issuer"              = each.value.is_ingress.tls_cluster_issuer
+        "nginx.ingress.kubernetes.io/ssl-redirect"    = each.value.is_ingress.enforce_https
+        "nginx.ingress.kubernetes.io/proxy-body-size" = each.value.is_ingress.proxy_body_size
+      },
+      each.value.is_ingress.additional_annotations
+    )
+  }
 
-#   spec {
-#     tls {
-#       hosts       = [each.value.is_ingress.domain_name]
-#       secret_name = format("%s-%s-https", var.name, each.value.name)
-#     }
-#     rule {
-#       host = each.value.is_ingress.domain_name
-#       http {
-#         path {
-#           path      = each.value.is_ingress.domain_path
-#           path_type = each.value.is_ingress.path_type
-#           backend {
-#             service {
-#               name = kubernetes_service_v1.app[0].metadata.0.name
-#               port {
-#                 name = each.value.name
-#               }
-#             }
-#           }
-#         }
-#       }
-#     }
-#   }
-# }
+  spec {
+    tls {
+      hosts       = each.value.is_ingress.domains.*.name
+      secret_name = format("%s-%s-https", var.name, each.value.name)
+    }
+
+    dynamic "rule" {
+      for_each = each.value.is_ingress.domains
+      content {
+        host = rule.value.name
+        http {
+          path {
+            path      = rule.value.domain_path
+            path_type = rule.value.path_type
+            backend {
+              service {
+                name = kubernetes_service_v1.app[each.value.name].metadata[0].name
+                port {
+                  name = each.value.name
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

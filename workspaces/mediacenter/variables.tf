@@ -16,11 +16,12 @@ variable "plex_claim" {
   type      = string
 }
 
-variable "domain_name" {
-  sensitive   = true
-  description = "DNS root/suffix domain to apply to workspace"
+variable "cloudflare_config" {
+  sensitive = false
   type = object({
-    name = string
-    # zone_id = string
+    email     = string
+    zone_name = string
+    api_token = string
+    zone_id   = string
   })
 }

@@ -1,13 +1,7 @@
 resource "kubernetes_service_v1" "app" {
-  for_each = merge(
-    [for c in var.containers :
-      { for s in coalesce(c.ports, []) :
-        s.name => s
-      }
-    ]...
-  )
+  for_each = { for p in coalesce(var.ports, []) : p.name => p }
   metadata {
-    name      = var.name
+    name      = format("%s-%s", var.name, each.value.name)
     namespace = var.namespace
   }
 
@@ -25,21 +19,4 @@ resource "kubernetes_service_v1" "app" {
       node_port   = each.value.node_port
     }
   }
-
-  # TODO: This overwrites the first spec if 2 ports are specified
-  # dynamic "spec" {
-  #   for_each = flatten([for c in var.containers : c.ports != null ? c.ports : []])
-  #   content {
-  #     type = spec.value.service_type
-  #     selector = {
-  #       app = var.name
-  #     }
-  #     port {
-  #       name        = spec.value.name
-  #       port        = spec.value.container_port
-  #       target_port = spec.value.name
-  #       node_port   = spec.value.node_port
-  #     }
-  #   }
-  # }
 }

@@ -10,3 +10,13 @@ variable "directory_config" {
     metadata    = string
   })
 }
+
+variable "cloudflare_config" {
+  sensitive = false
+  type = object({
+    email     = string
+    zone_name = string
+    api_token = string
+    zone_id   = string
+  })
+}

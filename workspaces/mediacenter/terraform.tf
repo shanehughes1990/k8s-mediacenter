@@ -16,9 +16,18 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "2.16.1"
     }
+
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "3.29.0"
+    }
   }
 }
 
 provider "kubernetes" {
   config_path = "~/.kube/config"
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_config.api_token
 }
