@@ -1,3 +1,10 @@
+resource "cloudflare_record" "plex" {
+  type    = "CNAME"
+  zone_id = var.cloudflare_config.zone_id
+  value   = var.cloudflare_config.zone_name
+  name    = format("%s.%s", "media", var.cloudflare_config.zone_name)
+}
+
 module "plex" {
   depends_on = [kubernetes_namespace_v1.namespace]
   source     = "../../modules/deployment"

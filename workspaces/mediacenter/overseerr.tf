@@ -2,7 +2,7 @@ resource "cloudflare_record" "overseerr" {
   type    = "CNAME"
   zone_id = var.cloudflare_config.zone_id
   value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "request", var.cloudflare_config.zone_name)
+  name    = format("%s.%s", "request", cloudflare_record.plex.name)
 }
 
 module "overseerr" {
@@ -17,14 +17,14 @@ module "overseerr" {
     {
       name           = "app-port"
       container_port = 5055
-      # is_ingress = {
-      #   tls_cluster_issuer = local.tls_cluster_issuer
-      #   domains = [
-      #     {
-      #       name = cloudflare_record.overseerr.name
-      #     }
-      #   ]
-      # }
+      is_ingress = {
+        tls_cluster_issuer = local.tls_cluster_issuer
+        domains = [
+          {
+            name = cloudflare_record.overseerr.name
+          },
+        ]
+      }
     }
   ]
 

@@ -2,7 +2,7 @@ resource "cloudflare_record" "radarr" {
   type    = "CNAME"
   zone_id = var.cloudflare_config.zone_id
   value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "movies", var.cloudflare_config.zone_name)
+  name    = format("%s.%s", "movies", cloudflare_record.plex.name)
 }
 
 module "radarr" {
