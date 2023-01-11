@@ -13,6 +13,10 @@ module "plex" {
   image_url  = "linuxserver/plex"
   image_tag  = "latest"
 
+  deployment_annotations = {
+    "diun.enable" = true
+  }
+
   ports = [
     {
       name           = "app-port"

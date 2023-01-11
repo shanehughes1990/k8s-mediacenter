@@ -13,6 +13,10 @@ module "nzbget" {
   image_url  = "linuxserver/nzbget"
   image_tag  = "latest"
 
+  deployment_annotations = {
+    "diun.enable" = true
+  }
+
   ports = [
     {
       name           = "app-port"

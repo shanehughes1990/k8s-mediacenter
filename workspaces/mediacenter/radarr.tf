@@ -13,6 +13,10 @@ module "radarr" {
   image_url  = "linuxserver/radarr"
   image_tag  = "develop"
 
+  deployment_annotations = {
+    "diun.enable" = true
+  }
+
   ports = [
     {
       name           = "app-port"

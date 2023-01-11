@@ -13,6 +13,10 @@ module "organizr" {
   image_url  = "organizr/organizr"
   image_tag  = "latest"
 
+  deployment_annotations = {
+    "diun.enable" = true
+  }
+
   ports = [
     {
       name           = "app-port"

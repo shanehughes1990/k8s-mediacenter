@@ -6,6 +6,10 @@ module "cloudflare_ddns" {
   image_url  = "cr.hotio.dev/hotio/cloudflareddns"
   image_tag  = "latest"
 
+  deployment_annotations = {
+    "diun.enable" = true
+  }
+
   env = setunion(
     local.common_env,
     [

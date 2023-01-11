@@ -13,6 +13,10 @@ module "vaultwarden" {
   image_url  = "vaultwarden/server"
   image_tag  = "latest"
 
+  deployment_annotations = {
+    "diun.enable" = true
+  }
+
   ports = [
     {
       name           = "app-port"

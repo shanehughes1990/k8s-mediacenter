@@ -13,6 +13,10 @@ module "overseerr" {
   image_url  = "linuxserver/overseerr"
   image_tag  = "latest"
 
+  deployment_annotations = {
+    "diun.enable" = true
+  }
+
   ports = [
     {
       name           = "app-port"

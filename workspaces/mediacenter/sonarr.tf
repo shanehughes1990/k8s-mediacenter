@@ -13,6 +13,10 @@ module "sonarr" {
   image_url  = "linuxserver/sonarr"
   image_tag  = "develop"
 
+  deployment_annotations = {
+    "diun.enable" = true
+  }
+
   ports = [
     {
       name           = "app-port"

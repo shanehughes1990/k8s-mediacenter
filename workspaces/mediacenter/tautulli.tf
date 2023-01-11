@@ -13,6 +13,10 @@ module "tautulli" {
   image_url  = "linuxserver/tautulli"
   image_tag  = "latest"
 
+  deployment_annotations = {
+    "diun.enable" = true
+  }
+
   ports = [
     {
       name           = "app-port"
