@@ -39,17 +39,12 @@ resource "kubernetes_deployment_v1" "app" {
         labels = {
           app = var.name
         }
+
+        annotations = var.deployment_annotations
       }
 
       spec {
-        # dynamic "security_context" {
-        #   for_each = var.security_context != null ? [var.security_context] : []
-        #   content {
-        #     run_as_user  = security_context.value.run_as_user
-        #     run_as_group = security_context.value.run_as_group
-        #     fs_group     = security_context.value.fs_group
-        #   }
-        # }
+        service_account_name = var.service_account_name
 
         container {
           image   = format("%s:%s", var.image_url, var.image_tag)

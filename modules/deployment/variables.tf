@@ -112,3 +112,17 @@ variable "args" {
 
   default = null
 }
+
+variable "service_account_name" {
+  description = "name of the service account to bind deployment too"
+  type        = string
+
+  default = null
+}
+
+variable "deployment_annotations" {
+  description = "deployment annotations to add to pod spec"
+  type        = map(string)
+
+  default = null
+}
