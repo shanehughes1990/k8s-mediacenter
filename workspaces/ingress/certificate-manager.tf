@@ -20,7 +20,7 @@ resource "helm_release" "cert_manager" {
     for_each = [
       {
         name  = "replicaCount"
-        value = 1
+        value = 3
       },
       {
         name  = "installCRDs"
