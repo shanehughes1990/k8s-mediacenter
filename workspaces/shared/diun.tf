@@ -73,7 +73,7 @@ module "diun" {
     [
       {
         name  = "LOG_LEVEL"
-        value = "debug"
+        value = "info"
       },
       {
         name  = "LOG_JSON"
@@ -85,7 +85,7 @@ module "diun" {
       },
       {
         name  = "DIUN_WATCH_SCHEDULE"
-        value = "0/15 * * * * *"
+        value = "0 */2 * * *"
       },
       {
         name  = "DIUN_WATCH_JITTER"
@@ -95,6 +95,23 @@ module "diun" {
         name  = "DIUN_PROVIDERS_KUBERNETES"
         value = true
       },
+      {
+        name  = "DIUN_NOTIF_DISCORD_WEBHOOKURL"
+        value = var.discord_webhook_url
+      },
+      {
+        name  = "DIUN_NOTIF_DISCORD_MENTIONS"
+        value = "@everyone"
+      },
+
     ]
   )
+
+  host_directories = [
+    {
+      name       = "data"
+      host_path  = format("%s/%s", var.directory_config.appdata, "diun")
+      mount_path = "/data"
+    }
+  ]
 }
