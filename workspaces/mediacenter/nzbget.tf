@@ -2,7 +2,7 @@ resource "cloudflare_record" "nzbget" {
   type    = "CNAME"
   zone_id = var.cloudflare_config.zone_id
   value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "usenet", var.cloudflare_config.zone_name)
+  name    = format("%s.%s", "usenet", cloudflare_record.plex.name)
 }
 
 module "nzbget" {
@@ -17,14 +17,17 @@ module "nzbget" {
     {
       name           = "app-port"
       container_port = 6789
-      # is_ingress = {
-      #   tls_cluster_issuer = local.tls_cluster_issuer
-      #   domains = [
-      #     {
-      #       name = cloudflare_record.nzbget.name
-      #     }
-      #   ]
-      # }
+      is_ingress = {
+        tls_cluster_issuer = local.tls_cluster_issuer
+        additional_annotations = {
+          "nginx.ingress.kubernetes.io/auth-url" = "https://${var.cloudflare_config.zone_name}/api/v2/auth/$1"
+        }
+        domains = [
+          {
+            name = cloudflare_record.nzbget.name
+          },
+        ]
+      }
     }
   ]
 

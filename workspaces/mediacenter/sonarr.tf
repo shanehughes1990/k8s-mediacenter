@@ -2,7 +2,7 @@ resource "cloudflare_record" "sonarr" {
   type    = "CNAME"
   zone_id = var.cloudflare_config.zone_id
   value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "tv", var.cloudflare_config.zone_name)
+  name    = format("%s.%s", "tv", cloudflare_record.plex.name)
 }
 
 module "sonarr" {
@@ -15,16 +15,19 @@ module "sonarr" {
 
   ports = [
     {
-      name           = "http"
+      name           = "app-port"
       container_port = 8989
-      # is_ingress = {
-      #   tls_cluster_issuer = local.tls_cluster_issuer
-      #   domains = [
-      #     {
-      #       name = cloudflare_record.sonarr.name
-      #     }
-      #   ]
-      # }
+      is_ingress = {
+        tls_cluster_issuer = local.tls_cluster_issuer
+        additional_annotations = {
+          "nginx.ingress.kubernetes.io/auth-url" = "https://${var.cloudflare_config.zone_name}/api/v2/auth/$1"
+        }
+        domains = [
+          {
+            name = cloudflare_record.sonarr.name
+          }
+        ]
+      }
     }
   ]
 
@@ -55,7 +58,7 @@ module "sonarr" {
     },
     {
       name       = "downloads"
-      host_path  = var.directory_config.downloads
+      host_path  = format("%s/usenet", var.directory_config.downloads)
       mount_path = "/data/downloads"
     },
   ]

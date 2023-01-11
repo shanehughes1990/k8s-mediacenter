@@ -16,8 +16,8 @@ module "plex" {
   ports = [
     {
       name           = "app-port"
-      container_port = 32400
       service_type   = "NodePort"
+      container_port = 32400
       node_port      = 32400
     }
   ]

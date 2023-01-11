@@ -17,14 +17,17 @@ module "radarr" {
     {
       name           = "app-port"
       container_port = 7878
-      # is_ingress = {
-      #   tls_cluster_issuer = local.tls_cluster_issuer
-      #   domains = [
-      #     {
-      #       name = cloudflare_record.radarr.name
-      #     }
-      #   ]
-      # }
+      is_ingress = {
+        tls_cluster_issuer = local.tls_cluster_issuer
+        additional_annotations = {
+          "nginx.ingress.kubernetes.io/auth-url" = "https://${var.cloudflare_config.zone_name}/api/v2/auth/$1"
+        }
+        domains = [
+          {
+            name = cloudflare_record.radarr.name
+          }
+        ]
+      }
     }
   ]
 
@@ -55,7 +58,7 @@ module "radarr" {
     },
     {
       name       = "downloads"
-      host_path  = var.directory_config.downloads
+      host_path  = format("%s/usenet", var.directory_config.downloads)
       mount_path = "/data/downloads"
     },
   ]
