@@ -52,6 +52,7 @@ variable "ports" {
     container_port = number
     protocol       = optional(string, "TCP")
     service_type   = optional(string, "ClusterIP")
+    cluster_ip     = optional(string, null)
     node_port      = optional(number, null)
     is_ingress = optional(object({
       tls_cluster_issuer     = string

@@ -6,7 +6,8 @@ resource "kubernetes_service_v1" "app" {
   }
 
   spec {
-    type = each.value.service_type
+    type       = each.value.service_type
+    cluster_ip = each.value.cluster_ip
     selector = {
       app = var.name
     }

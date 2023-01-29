@@ -23,6 +23,7 @@ module "plex" {
       service_type   = "NodePort"
       container_port = 32400
       node_port      = 32400
+      cluster_ip     = "10.152.183.36"
     }
   ]
 
