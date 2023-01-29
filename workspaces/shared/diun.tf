@@ -98,12 +98,7 @@ module "diun" {
       {
         name  = "DIUN_NOTIF_DISCORD_WEBHOOKURL"
         value = var.discord_webhook_url
-      },
-      {
-        name  = "DIUN_NOTIF_DISCORD_MENTIONS"
-        value = "@everyone"
-      },
-
+      }
     ]
   )
 
