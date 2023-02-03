@@ -127,3 +127,20 @@ variable "deployment_annotations" {
 
   default = null
 }
+
+variable "resources" {
+  description = "deployment resource specification"
+  type = object({
+    requests = optional(object({
+      cpu    = optional(string, null)
+      memory = optional(string, null)
+    }), {})
+    limits = optional(object({
+      cpu    = optional(string, null)
+      memory = optional(string, null)
+      gpu    = optional(number, null)
+    }), {})
+  })
+
+  default = null
+}

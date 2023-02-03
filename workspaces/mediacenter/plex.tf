@@ -27,12 +27,11 @@ module "plex" {
     }
   ]
 
-  // TODO: Fix gpu operator
-  # resources = {
-  #   limits = {
-  #     gpu = 1
-  #   }
-  # }
+  resources = {
+    limits = {
+      gpu = 1
+    }
+  }
 
   env = setunion(
     local.common_env,

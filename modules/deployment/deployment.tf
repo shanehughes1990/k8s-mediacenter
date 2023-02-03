@@ -111,6 +111,21 @@ resource "kubernetes_deployment_v1" "app" {
               sub_path   = volume_mount.value.is_volume.sub_path
             }
           }
+
+          dynamic "resources" {
+            for_each = var.resources != null ? [var.resources] : []
+            content {
+              requests = {
+                cpu    = resources.value.requests.cpu
+                memory = resources.value.requests.memory
+              }
+              limits = {
+                cpu    = resources.value.limits.cpu
+                memory = resources.value.limits.memory
+                "nvidia.com/gpu" : resources.value.limits.gpu
+              }
+            }
+          }
         }
 
         dynamic "volume" {

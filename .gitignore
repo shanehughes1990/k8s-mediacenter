@@ -39,3 +39,4 @@ terraform.rc
 
 # Ignore any testing folders
 **/testing
+**/nvidia
