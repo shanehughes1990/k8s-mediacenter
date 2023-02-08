@@ -100,6 +100,17 @@ variable "host_directories" {
   default = null
 }
 
+variable "ram_disks" {
+  description = "ram disk directories to moung to container"
+  type = list(object({
+    name       = string
+    mount_path = string
+    size_limit = optional(string, "8Gi")
+  }))
+
+  default = null
+}
+
 variable "command" {
   description = "container runtime commands"
   type        = list(string)

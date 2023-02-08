@@ -104,6 +104,14 @@ resource "kubernetes_deployment_v1" "app" {
           }
 
           dynamic "volume_mount" {
+            for_each = { for h in var.ram_disks != null ? var.ram_disks : [] : h.name => h }
+            content {
+              name       = volume_mount.value.name
+              mount_path = volume_mount.value.mount_path
+            }
+          }
+
+          dynamic "volume_mount" {
             for_each = { for e, env in nonsensitive(sensitive(coalesce(var.env, []))) : e => env if env.is_volume != null }
             content {
               name       = lower(replace(volume_mount.value.name, "_", "-"))
@@ -135,6 +143,17 @@ resource "kubernetes_deployment_v1" "app" {
             host_path {
               type = volume.value.type
               path = volume.value.host_path
+            }
+          }
+        }
+
+        dynamic "volume" {
+          for_each = { for h in var.ram_disks != null ? var.ram_disks : [] : h.name => h }
+          content {
+            name = volume.value.name
+            empty_dir {
+              medium     = "Memory"
+              size_limit = volume.value.size_limit
             }
           }
         }

@@ -63,10 +63,12 @@ module "plex" {
       host_path  = var.directory_config.media
       mount_path = "/data/media"
     },
+  ]
+
+  ram_disks = [
     {
       name       = "transcoding"
-      host_path  = format("%s/plex", var.directory_config.transcoding)
       mount_path = "/transcoding"
-    },
+    }
   ]
 }
