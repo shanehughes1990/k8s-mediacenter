@@ -1,5 +1,5 @@
 resource "kubernetes_service_v1" "app" {
-  for_each = { for p in coalesce(var.ports, []) : p.name => p }
+  for_each = { for p in nonsensitive(sensitive(coalesce(var.ports, []))) : p.name => p }
   metadata {
     name      = format("%s-%s", var.name, each.value.name)
     namespace = var.namespace

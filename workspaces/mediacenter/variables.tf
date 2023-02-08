@@ -1,11 +1,11 @@
 variable "directory_config" {
-  sensitive = true
+  sensitive = false
   type = object({
     appdata   = string
+    downloads = string
     media     = string
     tv_shows  = string
     movies    = string
-    downloads = string
   })
 }
 
@@ -15,7 +15,7 @@ variable "plex_claim" {
 }
 
 variable "cloudflare_config" {
-  sensitive = false
+  sensitive = true
   type = object({
     email     = string
     zone_name = string

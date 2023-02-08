@@ -1,5 +1,5 @@
 variable "directory_config" {
-  sensitive = true
+  sensitive = false
   type = object({
     appdata = string
   })

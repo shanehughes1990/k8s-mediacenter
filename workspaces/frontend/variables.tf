@@ -1,12 +1,12 @@
 variable "directory_config" {
-  sensitive = true
+  sensitive = false
   type = object({
     appdata = string
   })
 }
 
 variable "cloudflare_config" {
-  sensitive = false
+  sensitive = true
   type = object({
     email     = string
     zone_name = string

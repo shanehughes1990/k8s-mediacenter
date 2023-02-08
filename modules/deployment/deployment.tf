@@ -53,7 +53,7 @@ resource "kubernetes_deployment_v1" "app" {
           args    = var.args
 
           dynamic "port" {
-            for_each = coalesce(var.ports, [])
+            for_each = nonsensitive(sensitive(coalesce(var.ports, [])))
             content {
               name           = port.value.name
               container_port = port.value.container_port

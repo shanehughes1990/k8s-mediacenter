@@ -1,6 +1,6 @@
 resource "kubernetes_ingress_v1" "app" {
   depends_on = [kubernetes_service_v1.app]
-  for_each   = { for p in coalesce(var.ports, []) : p.name => p if p.is_ingress != null }
+  for_each   = { for p in nonsensitive(sensitive(coalesce(var.ports, []))) : p.name => p if p.is_ingress != null }
 
   metadata {
     name      = format("%s-%s", var.name, each.value.name)
