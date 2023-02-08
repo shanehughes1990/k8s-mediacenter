@@ -6,7 +6,6 @@ variable "directory_config" {
     tv_shows  = string
     movies    = string
     downloads = string
-    metadata  = string
   })
 }
 
