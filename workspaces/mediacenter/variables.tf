@@ -23,3 +23,11 @@ variable "cloudflare_config" {
     zone_id   = string
   })
 }
+
+variable "basic_auth" {
+  description = "contents of an htpasswd file"
+  type = object({
+    username = string
+    password = string
+  })
+}

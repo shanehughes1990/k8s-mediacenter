@@ -21,14 +21,16 @@ module "vaultwarden" {
     {
       name           = "app-port"
       container_port = 80
-      is_ingress = {
-        tls_cluster_issuer = local.tls_cluster_issuer
-        domains = [
-          {
-            name = cloudflare_record.vaultwarden.name
-          },
-        ]
-      }
+      ingress = [
+        {
+          tls_cluster_issuer = local.tls_cluster_issuer
+          domains = [
+            {
+              name = cloudflare_record.vaultwarden.name
+            },
+          ]
+        },
+      ]
     },
   ]
 

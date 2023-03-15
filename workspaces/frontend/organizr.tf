@@ -21,17 +21,19 @@ module "organizr" {
     {
       name           = "app-port"
       container_port = 80
-      is_ingress = {
-        tls_cluster_issuer = local.tls_cluster_issuer
-        domains = [
-          {
-            name = var.cloudflare_config.zone_name
-          },
-          {
-            name = cloudflare_record.organizr.name
-          },
-        ]
-      }
+      ingress = [
+        {
+          tls_cluster_issuer = local.tls_cluster_issuer
+          domains = [
+            {
+              name = var.cloudflare_config.zone_name
+            },
+            {
+              name = cloudflare_record.organizr.name
+            },
+          ]
+        },
+      ]
     },
   ]
 

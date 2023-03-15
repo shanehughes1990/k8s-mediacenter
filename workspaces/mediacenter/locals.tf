@@ -14,4 +14,9 @@ locals {
       value = "America/Toronto"
     }
   ]
+  basic_auth_annotations = {
+    "nginx.ingress.kubernetes.io/auth-type"   = "basic"
+    "nginx.ingress.kubernetes.io/auth-secret" = kubernetes_secret_v1.basic_auth.metadata[0].name
+    "nginx.ingress.kubernetes.io/auth-realm"  = "Basic auth required"
+  }
 }

@@ -24,6 +24,16 @@ module "plex" {
       container_port = 32400
       node_port      = 32400
       cluster_ip     = "10.152.183.36"
+      ingress = [
+        {
+          tls_cluster_issuer = local.tls_cluster_issuer
+          domains = [
+            {
+              name = cloudflare_record.plex.name
+            },
+          ]
+        },
+      ]
     }
   ]
 

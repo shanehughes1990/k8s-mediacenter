@@ -21,17 +21,19 @@ module "tautulli" {
     {
       name           = "app-port"
       container_port = 8181
-      is_ingress = {
-        tls_cluster_issuer = local.tls_cluster_issuer
-        additional_annotations = {
-          "nginx.ingress.kubernetes.io/auth-url" = "https://${var.cloudflare_config.zone_name}/api/v2/auth/$1"
-        }
-        domains = [
-          {
-            name = cloudflare_record.tautulli.name
+      ingress = [
+        {
+          tls_cluster_issuer = local.tls_cluster_issuer
+          additional_annotations = {
+            "nginx.ingress.kubernetes.io/auth-url" = "https://${var.cloudflare_config.zone_name}/api/v2/auth/$1"
           }
-        ]
-      }
+          domains = [
+            {
+              name = cloudflare_record.tautulli.name
+            }
+          ]
+        },
+      ]
     }
   ]
 

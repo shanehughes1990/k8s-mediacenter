@@ -5,6 +5,13 @@ resource "cloudflare_record" "radarr" {
   name    = format("%s.%s", "movies", cloudflare_record.plex.name)
 }
 
+resource "cloudflare_record" "radarr_basic_auth" {
+  type    = "CNAME"
+  zone_id = var.cloudflare_config.zone_id
+  value   = var.cloudflare_config.zone_name
+  name    = format("%s.%s", "movies", cloudflare_record.basic_auth.name)
+}
+
 module "radarr" {
   depends_on = [kubernetes_namespace_v1.namespace]
   source     = "../../modules/deployment"
@@ -21,17 +28,28 @@ module "radarr" {
     {
       name           = "app-port"
       container_port = 7878
-      is_ingress = {
-        tls_cluster_issuer = local.tls_cluster_issuer
-        additional_annotations = {
-          "nginx.ingress.kubernetes.io/auth-url" = "https://${var.cloudflare_config.zone_name}/api/v2/auth/$1"
-        }
-        domains = [
-          {
-            name = cloudflare_record.radarr.name
+      ingress = [
+        {
+          tls_cluster_issuer = local.tls_cluster_issuer
+          additional_annotations = {
+            "nginx.ingress.kubernetes.io/auth-url" = "https://${var.cloudflare_config.zone_name}/api/v2/auth/$1"
           }
-        ]
-      }
+          domains = [
+            {
+              name = cloudflare_record.radarr.name
+            }
+          ]
+        },
+        {
+          tls_cluster_issuer     = local.tls_cluster_issuer
+          additional_annotations = local.basic_auth_annotations
+          domains = [
+            {
+              name = cloudflare_record.radarr_basic_auth.name
+            },
+          ]
+        },
+      ]
     }
   ]
 

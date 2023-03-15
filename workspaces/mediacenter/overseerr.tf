@@ -21,14 +21,16 @@ module "overseerr" {
     {
       name           = "app-port"
       container_port = 5055
-      is_ingress = {
-        tls_cluster_issuer = local.tls_cluster_issuer
-        domains = [
-          {
-            name = cloudflare_record.overseerr.name
-          },
-        ]
-      }
+      ingress = [
+        {
+          tls_cluster_issuer = local.tls_cluster_issuer
+          domains = [
+            {
+              name = cloudflare_record.overseerr.name
+            },
+          ]
+        },
+      ]
     }
   ]
 
