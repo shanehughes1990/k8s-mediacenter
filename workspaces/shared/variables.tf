@@ -17,3 +17,12 @@ variable "discord_webhook_url" {
   description = "webhook url of the channel you want to have diun notify"
   sensitive   = true
 }
+
+variable "postgres_config" {
+  description = "postgres database configuration"
+  sensitive   = true
+  type = object({
+    username = string
+    password = string
+  })
+}
