@@ -45,6 +45,10 @@ module "plex" {
         value = "all"
       },
       {
+        name  = "NVIDIA_DRIVER_CAPABILITIES"
+        value = "compute,video,utility"
+      },
+      {
         name      = "PLEX_CLAIM"
         value     = var.plex_claim
         is_secret = true
