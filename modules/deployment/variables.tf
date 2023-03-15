@@ -54,7 +54,7 @@ variable "ports" {
     service_type   = optional(string, "ClusterIP")
     cluster_ip     = optional(string, null)
     node_port      = optional(number, null)
-    is_ingress = optional(object({
+    ingress = optional(list(object({
       tls_cluster_issuer     = string
       enforce_https          = optional(bool, true)
       proxy_body_size        = optional(string, "1m")
@@ -66,7 +66,7 @@ variable "ports" {
         domain_path = optional(string, "/")
         path_type   = optional(string, "ImplementationSpecific")
       }))
-    }))
+    })))
   }))
 
   default = null

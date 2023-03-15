@@ -1,18 +1,31 @@
 resource "kubernetes_ingress_v1" "app" {
   depends_on = [kubernetes_service_v1.app]
-  for_each   = { for p in nonsensitive(sensitive(coalesce(var.ports, []))) : p.name => p if p.is_ingress != null }
+  for_each = merge([for p in nonsensitive(sensitive(coalesce(var.ports, []))) :
+    { for index, i in nonsensitive(sensitive(coalesce(p.ingress, []))) :
+      format("%s-%d", p.name, index) => {
+        name                   = p.name
+        index                  = index
+        tls_cluster_issuer     = i.tls_cluster_issuer
+        enforce_https          = i.enforce_https
+        proxy_body_size        = i.proxy_body_size
+        additional_annotations = i.additional_annotations
+        domains                = i.domains
+      } if p.ingress != null
+    }
+    ]...
+  )
 
   metadata {
-    name      = format("%s-%s", var.name, each.value.name)
+    name      = format("%s-%s-%d", var.name, each.value.name, each.value.index)
     namespace = var.namespace
 
     annotations = merge(
       {
-        "cert-manager.io/cluster-issuer"              = each.value.is_ingress.tls_cluster_issuer
-        "nginx.ingress.kubernetes.io/ssl-redirect"    = each.value.is_ingress.enforce_https
-        "nginx.ingress.kubernetes.io/proxy-body-size" = each.value.is_ingress.proxy_body_size
+        "cert-manager.io/cluster-issuer"              = each.value.tls_cluster_issuer
+        "nginx.ingress.kubernetes.io/ssl-redirect"    = each.value.enforce_https
+        "nginx.ingress.kubernetes.io/proxy-body-size" = each.value.proxy_body_size
       },
-      each.value.is_ingress.additional_annotations
+      each.value.additional_annotations
     )
   }
 
@@ -20,12 +33,12 @@ resource "kubernetes_ingress_v1" "app" {
     ingress_class_name = "nginx"
 
     tls {
-      hosts       = each.value.is_ingress.domains.*.name
-      secret_name = format("%s-%s-https", var.name, each.value.name)
+      hosts       = each.value.domains.*.name
+      secret_name = format("%s-%s-%d-https", var.name, each.value.name, each.value.index)
     }
 
     dynamic "rule" {
-      for_each = each.value.is_ingress.domains
+      for_each = each.value.domains
       content {
         host = rule.value.name
         http {
