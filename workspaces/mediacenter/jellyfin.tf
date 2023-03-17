@@ -61,10 +61,10 @@ module "jellyfin" {
     },
   ]
 
-  # ram_disks = [
-  #   {
-  #     name       = "transcoding"
-  #     mount_path = "/transcoding"
-  #   }
-  # ]
+  ram_disks = [
+    {
+      name       = "transcoding"
+      mount_path = "/transcodes"
+    }
+  ]
 }
