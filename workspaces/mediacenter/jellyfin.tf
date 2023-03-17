@@ -1,16 +1,16 @@
-resource "cloudflare_record" "plex" {
+resource "cloudflare_record" "jellyfin" {
   type    = "CNAME"
   zone_id = var.cloudflare_config.zone_id
   value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "media", var.cloudflare_config.zone_name)
+  name    = format("%s.%s", "jellyfin", var.cloudflare_config.zone_name)
 }
 
-module "plex" {
+module "jellyfin" {
   depends_on = [kubernetes_namespace_v1.namespace]
   source     = "../../modules/deployment"
-  name       = "plex"
+  name       = "jellyfin"
   namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url  = "linuxserver/plex"
+  image_url  = "linuxserver/jellyfin"
   image_tag  = "latest"
 
   deployment_annotations = {
@@ -20,16 +20,13 @@ module "plex" {
   ports = [
     {
       name           = "app-port"
-      service_type   = "NodePort"
-      container_port = 32400
-      node_port      = 32400
-      cluster_ip     = "10.152.183.36"
+      container_port = 8096
       ingress = [
         {
           tls_cluster_issuer = local.tls_cluster_issuer
           domains = [
             {
-              name = cloudflare_record.plex.name
+              name = cloudflare_record.jellyfin.name
             },
           ]
         },
@@ -41,10 +38,6 @@ module "plex" {
     local.common_env,
     [
       {
-        name  = "VERSION"
-        value = "docker"
-      },
-      {
         name  = "NVIDIA_VISIBLE_DEVICES"
         value = "all"
       },
@@ -52,18 +45,13 @@ module "plex" {
         name  = "NVIDIA_DRIVER_CAPABILITIES"
         value = "compute,video,utility"
       },
-      {
-        name      = "PLEX_CLAIM"
-        value     = var.plex_claim
-        is_secret = true
-      },
     ]
   )
 
   host_directories = [
     {
       name       = "config"
-      host_path  = format("%s/%s", var.directory_config.appdata, "plex")
+      host_path  = format("%s/%s", var.directory_config.appdata, "jellyfin")
       mount_path = "/config"
     },
     {
@@ -73,10 +61,10 @@ module "plex" {
     },
   ]
 
-  ram_disks = [
-    {
-      name       = "transcoding"
-      mount_path = "/transcoding"
-    }
-  ]
+  # ram_disks = [
+  #   {
+  #     name       = "transcoding"
+  #     mount_path = "/transcoding"
+  #   }
+  # ]
 }
