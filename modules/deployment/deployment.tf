@@ -1,6 +1,7 @@
 resource "kubernetes_deployment_v1" "app" {
   depends_on = [
     kubernetes_secret_v1.app,
+    kubernetes_secret_v1.secret_volume,
   ]
   metadata {
     name      = var.name
@@ -112,11 +113,27 @@ resource "kubernetes_deployment_v1" "app" {
           }
 
           dynamic "volume_mount" {
+            for_each = { for h in var.tmp_disks != null ? var.tmp_disks : [] : h.name => h }
+            content {
+              name       = volume_mount.value.name
+              mount_path = volume_mount.value.mount_path
+            }
+          }
+
+          dynamic "volume_mount" {
             for_each = { for e, env in nonsensitive(sensitive(coalesce(var.env, []))) : e => env if env.is_volume != null }
             content {
               name       = lower(replace(volume_mount.value.name, "_", "-"))
               mount_path = volume_mount.value.is_volume.mount_path
               sub_path   = volume_mount.value.is_volume.sub_path
+            }
+          }
+
+          dynamic "volume_mount" {
+            for_each = { for e, env in nonsensitive(sensitive(coalesce(var.secret_volumes, []))) : e => env }
+            content {
+              name       = volume_mount.value.name
+              mount_path = volume_mount.value.mount_path
             }
           }
 
@@ -159,6 +176,14 @@ resource "kubernetes_deployment_v1" "app" {
         }
 
         dynamic "volume" {
+          for_each = { for h in var.tmp_disks != null ? var.tmp_disks : [] : h.name => h }
+          content {
+            name = volume.value.name
+            empty_dir {}
+          }
+        }
+
+        dynamic "volume" {
           for_each = { for e, env in nonsensitive(sensitive(coalesce(var.env, []))) : e => env if env.is_secret == true && env.is_volume != null }
           content {
             name = lower(replace(volume.value.name, "_", "-"))
@@ -172,6 +197,23 @@ resource "kubernetes_deployment_v1" "app" {
                   path = items.value.is_volume.sub_path
                 }
               }
+            }
+          }
+        }
+
+        dynamic "volume" {
+          for_each = { for e, env in nonsensitive(sensitive(coalesce(var.secret_volumes, []))) : e => {
+            name         = env.name
+            mount_path   = env.mount_path
+            default_mode = env.default_mode
+            data         = env.data
+            index        = e
+          } }
+          content {
+            name = lower(replace(volume.value.name, "_", "-"))
+            secret {
+              default_mode = volume.value.default_mode
+              secret_name  = kubernetes_secret_v1.secret_volume[volume.value.index].metadata[0].name
             }
           }
         }

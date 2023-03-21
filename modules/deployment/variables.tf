@@ -101,11 +101,33 @@ variable "host_directories" {
 }
 
 variable "ram_disks" {
-  description = "ram disk directories to moung to container"
+  description = "ram disk directories to mount to container"
   type = list(object({
     name       = string
     mount_path = string
     size_limit = optional(string, "8Gi")
+  }))
+
+  default = null
+}
+
+variable "tmp_disks" {
+  description = "empty directories to mount to container"
+  type = list(object({
+    name       = string
+    mount_path = string
+  }))
+
+  default = null
+}
+
+variable "secret_volumes" {
+  description = "volumes to mount that come from secrets"
+  type = list(object({
+    name         = string
+    mount_path   = string
+    default_mode = optional(string, "0644")
+    data         = optional(map(any))
   }))
 
   default = null

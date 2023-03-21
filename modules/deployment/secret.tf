@@ -7,3 +7,14 @@ resource "kubernetes_secret_v1" "app" {
 
   data = { for s in var.env : s.name => s.value if s.is_secret == true }
 }
+
+resource "kubernetes_secret_v1" "secret_volume" {
+  for_each = { for e, env in nonsensitive(sensitive(coalesce(var.secret_volumes, []))) : e => env }
+  metadata {
+    name      = "${var.name}-${each.value.name}"
+    namespace = var.namespace
+  }
+
+  # data = { for s in var.env : s.name => s.value if s.is_secret == true }
+  data = { for s in each.value.data != null ? each.value.data : {} : s.name => s.value }
+}
