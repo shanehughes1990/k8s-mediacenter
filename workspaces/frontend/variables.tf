@@ -27,3 +27,8 @@ variable "vaultwarden_config" {
     smtp_timeout   = optional(number, 15)
   })
 }
+
+# variable "pgadmin_password" {
+#   description = "password for pgadmin"
+#   type        = string
+# }

@@ -53,6 +53,16 @@ resource "kubernetes_deployment_v1" "app" {
           command = var.command
           args    = var.args
 
+          dynamic "security_context" {
+            for_each = var.container_security_context != null ? [var.container_security_context] : []
+            content {
+              allow_privilege_escalation = security_context.value.allow_privilege_escalation
+              read_only_root_filesystem  = security_context.value.read_only_root_filesystem
+              run_as_user                = security_context.value.run_as_user
+              run_as_group               = security_context.value.run_as_group
+            }
+          }
+
           dynamic "port" {
             for_each = nonsensitive(sensitive(coalesce(var.ports, [])))
             content {

@@ -177,3 +177,15 @@ variable "resources" {
 
   default = null
 }
+
+variable "container_security_context" {
+  description = "SecurityContext holds pod-level security attributes and common container settings"
+  type = object({
+    allow_privilege_escalation = optional(bool, false)
+    read_only_root_filesystem  = optional(bool, false)
+    run_as_user                = optional(number, null)
+    run_as_group               = optional(number, null)
+  })
+
+  default = null
+}
