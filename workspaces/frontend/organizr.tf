@@ -26,9 +26,6 @@ module "organizr" {
           tls_cluster_issuer = local.tls_cluster_issuer
           domains = [
             {
-              name = var.cloudflare_config.zone_name
-            },
-            {
               name = cloudflare_record.organizr.name
             },
           ]

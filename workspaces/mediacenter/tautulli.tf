@@ -25,7 +25,7 @@ module "tautulli" {
         {
           tls_cluster_issuer = local.tls_cluster_issuer
           additional_annotations = {
-            "nginx.ingress.kubernetes.io/auth-url" = "https://${var.cloudflare_config.zone_name}/api/v2/auth/$1"
+            "nginx.ingress.kubernetes.io/auth-url" = "https://${data.terraform_remote_state.frontend.outputs.organizr.dns}/api/v2/auth/$1"
           }
           domains = [
             {
