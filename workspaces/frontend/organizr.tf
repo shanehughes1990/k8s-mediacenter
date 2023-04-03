@@ -39,7 +39,7 @@ module "organizr" {
     [
       {
         name  = "branch"
-        value = "v2-develop"
+        value = "v2-master"
       },
       {
         name  = "fpm"
