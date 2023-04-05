@@ -5,6 +5,16 @@ variable "directory_config" {
   })
 }
 
+variable "cloudflare_config" {
+  sensitive = true
+  type = object({
+    email     = string
+    zone_name = string
+    api_token = string
+    zone_id   = string
+  })
+}
+
 variable "cloud_sql_proxy_config" {
   sensitive = true
   type = object({

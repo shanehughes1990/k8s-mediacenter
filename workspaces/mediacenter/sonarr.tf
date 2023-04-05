@@ -13,16 +13,13 @@ resource "cloudflare_record" "sonarr_basic_auth" {
 }
 
 module "sonarr" {
-  depends_on = [kubernetes_namespace_v1.namespace]
-  source     = "../../modules/deployment"
-  name       = "sonarr"
-  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url  = "linuxserver/sonarr"
-  image_tag  = "develop"
-
-  deployment_annotations = {
-    "diun.enable" = true
-  }
+  depends_on           = [kubernetes_namespace_v1.namespace]
+  source               = "../../modules/deployment"
+  name                 = "sonarr"
+  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url            = "linuxserver/sonarr"
+  image_tag            = "4.0.0-develop"
+  metadata_annotations = local.keel_annotations
 
   ports = [
     {

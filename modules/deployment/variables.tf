@@ -161,6 +161,13 @@ variable "deployment_annotations" {
   default = null
 }
 
+variable "metadata_annotations" {
+  description = "deployment metadata annotations to add to pod spec"
+  type        = map(string)
+
+  default = null
+}
+
 variable "resources" {
   description = "deployment resource specification"
   type = object({

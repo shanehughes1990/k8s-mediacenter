@@ -6,16 +6,13 @@ resource "cloudflare_record" "vaultwarden" {
 }
 
 module "vaultwarden" {
-  depends_on = [kubernetes_namespace_v1.namespace]
-  source     = "../../modules/deployment"
-  name       = "vaultwarden"
-  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url  = "vaultwarden/server"
-  image_tag  = "latest"
-
-  deployment_annotations = {
-    "diun.enable" = true
-  }
+  depends_on           = [kubernetes_namespace_v1.namespace]
+  source               = "../../modules/deployment"
+  name                 = "vaultwarden"
+  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url            = "vaultwarden/server"
+  image_tag            = "latest"
+  metadata_annotations = local.keel_annotations
 
   ports = [
     {

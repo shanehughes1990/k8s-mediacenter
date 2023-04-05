@@ -189,6 +189,7 @@ module "kubernetes_dashboard" {
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url            = "kubernetesui/dashboard"
   image_tag            = "v2.7.0"
+  metadata_annotations = local.keel_annotations
   service_account_name = kubernetes_service_account_v1.kubernetes_dashboard.metadata[0].name
 
   args = [
@@ -197,10 +198,6 @@ module "kubernetes_dashboard" {
     "--enable-insecure-login",
     "--namespace=${kubernetes_namespace_v1.namespace.metadata[0].name}",
   ]
-
-  deployment_annotations = {
-    "diun.enable" = true
-  }
 
   ports = [
     {

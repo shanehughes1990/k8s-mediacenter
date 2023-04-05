@@ -1,10 +1,11 @@
 module "postgres" {
-  depends_on = [kubernetes_namespace_v1.namespace]
-  source     = "../../modules/deployment"
-  name       = "postgres"
-  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url  = "postgres"
-  image_tag  = "12.3"
+  depends_on           = [kubernetes_namespace_v1.namespace]
+  source               = "../../modules/deployment"
+  name                 = "postgres"
+  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url            = "postgres"
+  image_tag            = "12.3"
+  metadata_annotations = local.keel_annotations
 
   ports = [
     {

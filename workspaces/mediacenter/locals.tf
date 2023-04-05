@@ -19,4 +19,10 @@ locals {
     "nginx.ingress.kubernetes.io/auth-secret" = kubernetes_secret_v1.basic_auth.metadata[0].name
     "nginx.ingress.kubernetes.io/auth-realm"  = "Basic auth required"
   }
+
+  keel_annotations = {
+    "keel.sh/policy"       = "force"
+    "keel.sh/pollSchedule" = "@every 10m"
+    "keel.sh/trigger"      = "poll"
+  }
 }

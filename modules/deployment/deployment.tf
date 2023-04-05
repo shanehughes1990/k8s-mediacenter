@@ -4,8 +4,9 @@ resource "kubernetes_deployment_v1" "app" {
     kubernetes_secret_v1.secret_volume,
   ]
   metadata {
-    name      = var.name
-    namespace = var.namespace
+    name        = var.name
+    namespace   = var.namespace
+    annotations = var.metadata_annotations
     labels = {
       app = var.name
     }

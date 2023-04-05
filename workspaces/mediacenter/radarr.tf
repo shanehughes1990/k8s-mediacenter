@@ -13,16 +13,13 @@ resource "cloudflare_record" "radarr_basic_auth" {
 }
 
 module "radarr" {
-  depends_on = [kubernetes_namespace_v1.namespace]
-  source     = "../../modules/deployment"
-  name       = "radarr"
-  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url  = "linuxserver/radarr"
-  image_tag  = "develop"
-
-  deployment_annotations = {
-    "diun.enable" = true
-  }
+  depends_on           = [kubernetes_namespace_v1.namespace]
+  source               = "../../modules/deployment"
+  name                 = "radarr"
+  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url            = "linuxserver/radarr"
+  image_tag            = "4.4.2-develop"
+  metadata_annotations = local.keel_annotations
 
   ports = [
     {
