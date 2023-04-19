@@ -121,11 +121,11 @@ module "keel" {
     },
     {
       name  = "BASIC_AUTH_USER"
-      value = "admin"
+      value = var.keel_config.username
     },
     {
       name  = "BASIC_AUTH_PASSWORD"
-      value = "password123"
+      value = var.keel_config.password
     },
   ]
 

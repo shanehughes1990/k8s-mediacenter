@@ -18,7 +18,8 @@ module "radarr" {
   name                 = "radarr"
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url            = "linuxserver/radarr"
-  image_tag            = "4.4.2-develop"
+  image_tag            = "develop"
+  image_pull_policy    = "Always"
   metadata_annotations = local.keel_annotations
 
   ports = [

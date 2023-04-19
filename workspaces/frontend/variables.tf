@@ -32,3 +32,18 @@ variable "pgadmin_password" {
   description = "password for pgadmin"
   type        = string
 }
+
+variable "keel_config" {
+  sensitive   = true
+  description = "keel admin config"
+  type = object({
+    username = string
+    password = string
+  })
+}
+
+variable "discord_webhook_url" {
+  description = "webhook url of the channel you want to have diun notify"
+  sensitive   = true
+  type        = string
+}

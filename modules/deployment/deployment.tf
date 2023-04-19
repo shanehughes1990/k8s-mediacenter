@@ -3,6 +3,13 @@ resource "kubernetes_deployment_v1" "app" {
     kubernetes_secret_v1.app,
     kubernetes_secret_v1.secret_volume,
   ]
+
+  lifecycle {
+    ignore_changes = [
+      spec[0].template[0].metadata[0].annotations
+    ]
+  }
+
   metadata {
     name        = var.name
     namespace   = var.namespace
@@ -49,10 +56,11 @@ resource "kubernetes_deployment_v1" "app" {
         service_account_name = var.service_account_name
 
         container {
-          image   = format("%s:%s", var.image_url, var.image_tag)
-          name    = var.name
-          command = var.command
-          args    = var.args
+          image             = format("%s:%s", var.image_url, var.image_tag)
+          image_pull_policy = var.image_pull_policy
+          name              = var.name
+          command           = var.command
+          args              = var.args
 
           dynamic "security_context" {
             for_each = var.container_security_context != null ? [var.container_security_context] : []

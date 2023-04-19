@@ -45,6 +45,13 @@ variable "image_tag" {
   type        = string
 }
 
+variable "image_pull_policy" {
+  description = "Image policy to apply when rolling out container"
+  type        = string
+
+  default = null
+}
+
 variable "ports" {
   description = "container ports to add to deployment"
   type = list(object({

@@ -23,12 +23,6 @@ variable "cloud_sql_proxy_config" {
   })
 }
 
-variable "discord_webhook_url" {
-  description = "webhook url of the channel you want to have diun notify"
-  sensitive   = true
-  type        = string
-}
-
 variable "postgres_config" {
   description = "postgres database configuration"
   sensitive   = true
