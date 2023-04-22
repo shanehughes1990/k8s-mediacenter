@@ -1,10 +1,3 @@
-variable "directory_config" {
-  sensitive = false
-  type = object({
-    appdata = string
-  })
-}
-
 variable "cloudflare_config" {
   sensitive = true
   type = object({
