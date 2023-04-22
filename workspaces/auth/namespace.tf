@@ -1,5 +1,5 @@
-resource "kubernetes_namespace_v1" "namespace" {
-  metadata {
-    name = local.environment
-  }
-}
+# resource "kubernetes_namespace_v1" "namespace" {
+#   metadata {
+#     name = local.environment
+#   }
+# }
