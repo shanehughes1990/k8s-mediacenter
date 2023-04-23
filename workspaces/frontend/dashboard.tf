@@ -7,13 +7,6 @@ locals {
   }
 }
 
-resource "cloudflare_record" "kubernetes_dashboard" {
-  type    = "CNAME"
-  zone_id = var.cloudflare_config.zone_id
-  value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "k8s", var.cloudflare_config.zone_name)
-}
-
 resource "kubernetes_service_account_v1" "kubernetes_dashboard" {
   depends_on = [
     kubernetes_namespace_v1.namespace,
@@ -203,19 +196,6 @@ module "kubernetes_dashboard" {
     {
       name           = "app-port"
       container_port = 9090
-      ingress = [
-        {
-          tls_cluster_issuer = local.tls_cluster_issuer
-          additional_annotations = {
-            "nginx.ingress.kubernetes.io/auth-url" = "https://${cloudflare_record.organizr.name}/api/v2/auth/$1"
-          }
-          domains = [
-            {
-              name = cloudflare_record.kubernetes_dashboard.name
-            },
-          ]
-        },
-      ]
     },
   ]
 

@@ -4,5 +4,7 @@ variable "cloudflare_config" {
     api_token = string
     email     = string
     zone_name = string
+    tls_crt   = string
+    tls_key   = string
   })
 }

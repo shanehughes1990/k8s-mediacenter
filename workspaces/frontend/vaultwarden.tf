@@ -1,10 +1,3 @@
-resource "cloudflare_record" "vaultwarden" {
-  type    = "CNAME"
-  zone_id = var.cloudflare_config.zone_id
-  value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "vault", var.cloudflare_config.zone_name)
-}
-
 module "vaultwarden" {
   depends_on           = [kubernetes_namespace_v1.namespace]
   source               = "../../modules/deployment"
@@ -20,12 +13,7 @@ module "vaultwarden" {
       container_port = 80
       ingress = [
         {
-          tls_cluster_issuer = local.tls_cluster_issuer
-          domains = [
-            {
-              name = cloudflare_record.vaultwarden.name
-            },
-          ]
+          domain_match_pattern = "Host(`vault.${var.cloudflare_config.zone_name}`)"
         },
       ]
     },
@@ -63,7 +51,7 @@ module "vaultwarden" {
     },
     {
       name  = "DOMAIN"
-      value = format("https://%s", cloudflare_record.vaultwarden.name)
+      value = "https://vault.${var.cloudflare_config.zone_name}"
     },
     {
       name      = "SMTP_HOST"

@@ -45,3 +45,4 @@ modules/**
 !modules/deployment
 
 .local
+**/certs

@@ -62,17 +62,10 @@ variable "ports" {
     cluster_ip     = optional(string, null)
     node_port      = optional(number, null)
     ingress = optional(list(object({
-      tls_cluster_issuer     = string
+      domain_match_pattern   = string
+      strip_prefix           = optional(string, null)
       enforce_https          = optional(bool, true)
-      proxy_body_size        = optional(string, "1m")
-      domain_path            = optional(string, "/")
-      path_type              = optional(string, "Prefix")
       additional_annotations = optional(map(string))
-      domains = list(object({
-        name        = string
-        domain_path = optional(string, "/")
-        path_type   = optional(string, "ImplementationSpecific")
-      }))
     })))
   }))
 

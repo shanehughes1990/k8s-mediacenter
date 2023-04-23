@@ -18,16 +18,6 @@
 #     {
 #       name           = "app-port"
 #       container_port = 8096
-#       ingress = [
-#         {
-#           tls_cluster_issuer = local.tls_cluster_issuer
-#           domains = [
-#             {
-#               name = cloudflare_record.jellyfin.name
-#             },
-#           ]
-#         },
-#       ]
 #     }
 #   ]
 

@@ -1,10 +1,3 @@
-resource "cloudflare_record" "plex" {
-  type    = "CNAME"
-  zone_id = var.cloudflare_config.zone_id
-  value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "media", var.cloudflare_config.zone_name)
-}
-
 module "plex" {
   depends_on           = [kubernetes_namespace_v1.namespace]
   source               = "../../modules/deployment"
@@ -23,12 +16,7 @@ module "plex" {
       cluster_ip     = "10.152.183.36"
       ingress = [
         {
-          tls_cluster_issuer = local.tls_cluster_issuer
-          domains = [
-            {
-              name = cloudflare_record.plex.name
-            },
-          ]
+          domain_match_pattern = "Host(`media.${var.cloudflare_config.zone_name}`)"
         },
       ]
     }

@@ -21,6 +21,11 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "3.29.0"
     }
+
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = "1.14.0"
+    }
   }
 }
 
@@ -30,4 +35,8 @@ provider "kubernetes" {
 
 provider "cloudflare" {
   api_token = var.cloudflare_config.api_token
+}
+
+provider "kubectl" {
+  config_path = "~/.kube/config"
 }

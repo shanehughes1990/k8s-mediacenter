@@ -1,6 +1,6 @@
 output "organizr" {
   sensitive = true
   value = {
-    dns = cloudflare_record.organizr.name
+    dns = "web.${var.cloudflare_config.zone_name}"
   }
 }

@@ -2,13 +2,6 @@ locals {
   keel_deployment_name = "keel"
 }
 
-resource "cloudflare_record" "keel" {
-  type    = "CNAME"
-  zone_id = var.cloudflare_config.zone_id
-  value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "keel", var.cloudflare_config.zone_name)
-}
-
 resource "kubernetes_service_account_v1" "keel" {
   automount_service_account_token = false
   metadata {
@@ -93,16 +86,6 @@ module "keel" {
     {
       name           = "app-port"
       container_port = 9300
-      ingress = [
-        {
-          tls_cluster_issuer = local.tls_cluster_issuer
-          domains = [
-            {
-              name = cloudflare_record.keel.name
-            },
-          ]
-        },
-      ]
     }
   ]
 

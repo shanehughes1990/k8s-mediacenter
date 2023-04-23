@@ -37,7 +37,7 @@ module "cloudflare_ddns" {
       },
       {
         name      = "CF_HOSTS"
-        value     = var.cloudflare_config.zone_name
+        value     = "${var.cloudflare_config.zone_name}"
         is_secret = true
       },
       {

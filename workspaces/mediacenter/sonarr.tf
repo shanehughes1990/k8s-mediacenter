@@ -1,17 +1,3 @@
-resource "cloudflare_record" "sonarr" {
-  type    = "CNAME"
-  zone_id = var.cloudflare_config.zone_id
-  value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "tv", cloudflare_record.plex.name)
-}
-
-resource "cloudflare_record" "sonarr_basic_auth" {
-  type    = "CNAME"
-  zone_id = var.cloudflare_config.zone_id
-  value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "tv", cloudflare_record.basic_auth.name)
-}
-
 module "sonarr" {
   depends_on           = [kubernetes_namespace_v1.namespace]
   source               = "../../modules/deployment"
@@ -26,28 +12,6 @@ module "sonarr" {
     {
       name           = "app-port"
       container_port = 8989
-      ingress = [
-        {
-          tls_cluster_issuer = local.tls_cluster_issuer
-          additional_annotations = {
-            "nginx.ingress.kubernetes.io/auth-url" = "https://${data.terraform_remote_state.frontend.outputs.organizr.dns}/api/v2/auth/$1"
-          }
-          domains = [
-            {
-              name = cloudflare_record.sonarr.name
-            }
-          ]
-        },
-        {
-          tls_cluster_issuer     = local.tls_cluster_issuer
-          additional_annotations = local.basic_auth_annotations
-          domains = [
-            {
-              name = cloudflare_record.sonarr_basic_auth.name
-            },
-          ]
-        },
-      ]
     }
   ]
 

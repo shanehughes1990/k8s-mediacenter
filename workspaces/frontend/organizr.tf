@@ -1,10 +1,3 @@
-resource "cloudflare_record" "organizr" {
-  type    = "CNAME"
-  zone_id = var.cloudflare_config.zone_id
-  value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "web", var.cloudflare_config.zone_name)
-}
-
 module "organizr" {
   depends_on           = [kubernetes_namespace_v1.namespace]
   source               = "../../modules/deployment"
@@ -20,15 +13,18 @@ module "organizr" {
       container_port = 80
       ingress = [
         {
-          tls_cluster_issuer = local.tls_cluster_issuer
-          domains = [
-            {
-              name = var.cloudflare_config.zone_name
-            },
-            {
-              name = cloudflare_record.organizr.name
-            },
-          ]
+          domain_match_pattern = "Host(`web.${var.cloudflare_config.zone_name}`)"
+          # additional_annotations = {
+          #   "ingress.kubernetes.io/preserve-host" : true
+          #   # Forces a Permanent (301) redirect
+          #   "ingress.kubernetes.io/redirect-permanent" : true
+          #   # Specifies a regex for which URLs to redirect
+          #   "ingress.kubernetes.io/redirect-regex" : "^https://web.${var.cloudflare_config.zone_name}/(.*)"
+          #   # Here is where redirected URLs will end up
+          #   #   Notice the $3, which is the third capture
+          #   #   group from the above regex
+          #   "ingress.kubernetes.io/redirect-replacement" : "https://${var.cloudflare_config.zone_name}/$1"
+          # }
         },
       ]
     },

@@ -1,10 +1,3 @@
-resource "cloudflare_record" "overseerr" {
-  type    = "CNAME"
-  zone_id = var.cloudflare_config.zone_id
-  value   = var.cloudflare_config.zone_name
-  name    = format("%s.%s", "request", cloudflare_record.plex.name)
-}
-
 module "overseerr" {
   depends_on           = [kubernetes_namespace_v1.namespace]
   source               = "../../modules/deployment"
@@ -20,12 +13,7 @@ module "overseerr" {
       container_port = 5055
       ingress = [
         {
-          tls_cluster_issuer = local.tls_cluster_issuer
-          domains = [
-            {
-              name = cloudflare_record.overseerr.name
-            },
-          ]
+          domain_match_pattern = "Host(`requests.${var.cloudflare_config.zone_name}`)"
         },
       ]
     }
