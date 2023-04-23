@@ -8,6 +8,7 @@ resource "kubernetes_manifest" "app" {
         additional_annotations = i.additional_annotations
         domain_match_pattern   = i.domain_match_pattern
         enforce_https          = i.enforce_https
+        middlewares            = i.middlewares
       } if p.ingress != null
     }
     ]...
@@ -41,36 +42,9 @@ resource "kubernetes_manifest" "app" {
               "port" : each.value.name
             }
           ]
+          "middlewares" : each.value.middlewares
         }
       ],
     }
   }
 }
-
-# resource "kubernetes_manifest" "app_strip_prefix" {
-#   depends_on = [kubernetes_service_v1.app]
-#   for_each = merge([for p in nonsensitive(sensitive(coalesce(var.ports, []))) :
-#     { for index, i in nonsensitive(sensitive(coalesce(p.ingress, []))) :
-#       format("%s-%d", p.name, index) => {
-#         name         = p.name
-#         index        = index
-#         strip_prefix = i.strip_prefix
-#       } if p.ingress != null && i.strip_prefix != null
-#     }
-#     ]...
-#   )
-
-#   manifest = {
-#     "apiVersion" : "traefik.containo.us/v1alpha1",
-#     "kind" : "Middleware",
-#     "metadata" : {
-#       "name" : format("%s-%s-%d", var.name, each.value.name, each.value.index)
-#       "namespace" : var.namespace
-#     },
-#     "spec" : {
-#       "stripPrefix" : {
-#         "prefixes" : [each.value.strip_prefix]
-#       }
-#     }
-#   }
-# }

@@ -63,9 +63,12 @@ variable "ports" {
     node_port      = optional(number, null)
     ingress = optional(list(object({
       domain_match_pattern   = string
-      strip_prefix           = optional(string, null)
       enforce_https          = optional(bool, true)
       additional_annotations = optional(map(string))
+      middlewares = optional(list(object({
+        name      = string
+        namespace = string
+      })), []) // I put an empty list as default to avoid terraform plan changing null to known after apply every time
     })))
   }))
 
