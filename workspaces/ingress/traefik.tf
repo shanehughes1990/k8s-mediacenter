@@ -10,23 +10,6 @@ resource "kubernetes_secret_v1" "traefik" {
   }
 }
 
-resource "kubernetes_manifest" "auth_forward_middlewaree" {
-  depends_on = [kubernetes_namespace_v1.namespace]
-  manifest = {
-    "apiVersion" : "traefik.containo.us/v1alpha1",
-    "kind" : "Middleware",
-    "metadata" : {
-      "name" : "organizr-admin-middleware"
-      "namespace" : local.environment
-    },
-    "spec" : {
-      "forwardAuth" : {
-        "address" : "https://web.${var.cloudflare_config.zone_name}/api/v2/auth/$1"
-      }
-    }
-  }
-}
-
 resource "helm_release" "traefik" {
   depends_on = [kubernetes_namespace_v1.namespace, kubernetes_secret_v1.traefik]
   namespace  = local.environment
@@ -41,6 +24,11 @@ resource "helm_release" "traefik" {
         "deployment" : {
           "enabled" : true,
           "replicas" : 3,
+        }
+        "providers" : {
+          "kubernetesCRD" : {
+            "allowCrossNamespace" : true
+          }
         }
         "ingressClass" : {
           "enabled" : true,

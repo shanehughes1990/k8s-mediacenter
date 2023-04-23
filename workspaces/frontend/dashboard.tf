@@ -196,6 +196,17 @@ module "kubernetes_dashboard" {
     {
       name           = "app-port"
       container_port = 9090
+      ingress = [
+        {
+          domain_match_pattern = "Host(`k8s.${var.cloudflare_config.zone_name}`)"
+          middlewares = [
+            {
+              name      = kubernetes_manifest.organizr_forward_auth_admin.manifest.metadata.name
+              namespace = kubernetes_manifest.organizr_forward_auth_admin.manifest.metadata.namespace
+            }
+          ]
+        },
+      ]
     },
   ]
 

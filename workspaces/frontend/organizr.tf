@@ -1,3 +1,20 @@
+resource "kubernetes_manifest" "organizr_forward_auth_admin" {
+
+  manifest = {
+    "apiVersion" : "traefik.containo.us/v1alpha1",
+    "kind" : "Middleware",
+    "metadata" : {
+      "name" : "organizr-forward-auth-admin"
+      "namespace" : kubernetes_namespace_v1.namespace.metadata[0].name
+    },
+    "spec" : {
+      "forwardAuth" : {
+        "address" : "https://web.${var.cloudflare_config.zone_name}/api/v2/auth/$1"
+      }
+    }
+  }
+}
+
 module "organizr" {
   depends_on           = [kubernetes_namespace_v1.namespace]
   source               = "../../modules/deployment"

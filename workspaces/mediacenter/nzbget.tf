@@ -11,14 +11,17 @@ module "nzbget" {
     {
       name           = "app-port"
       container_port = 6789
-      # ingress = [
-      #   {
-      #     domain_match_pattern = "Host(`nzbget.${var.cloudflare_config.zone_name}`)"
-      #     additional_annotations = {
-      #       "nginx.ingress.kubernetes.io/auth-url" = "https://${data.terraform_remote_state.frontend.outputs.organizr.dns}/api/v2/auth/$1"
-      #     }
-      #   },
-      # ]
+      ingress = [
+        {
+          domain_match_pattern = "Host(`nzbget.${var.cloudflare_config.zone_name}`)"
+          middlewares = [
+            {
+              name      = data.terraform_remote_state.frontend.outputs.organizr.middlewares.auth_admin.name
+              namespace = data.terraform_remote_state.frontend.outputs.organizr.middlewares.auth_admin.namespace
+            }
+          ]
+        },
+      ]
     }
   ]
 

@@ -13,7 +13,7 @@ module "overseerr" {
       container_port = 5055
       ingress = [
         {
-          domain_match_pattern = "Host(`requests.${var.cloudflare_config.zone_name}`)"
+          domain_match_pattern = "Host(`request.${var.cloudflare_config.zone_name}`)"
         },
       ]
     }
