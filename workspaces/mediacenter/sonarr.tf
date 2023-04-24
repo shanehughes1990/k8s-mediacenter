@@ -14,7 +14,7 @@ module "sonarr" {
       container_port = 8989
       ingress = [
         {
-          domain_match_pattern = "Host(`tv.${var.cloudflare_config.zone_name}`)"
+          domain_match_pattern = "Host(`${var.cloudflare_config.zone_name}`) && PathPrefix(`/sonarr`)"
           middlewares = [
             {
               name      = data.terraform_remote_state.frontend.outputs.organizr.middlewares.auth_admin.name

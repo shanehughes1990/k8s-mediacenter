@@ -13,7 +13,7 @@ module "tautulli" {
       container_port = 8181
       ingress = [
         {
-          domain_match_pattern = "Host(`tautulli.${var.cloudflare_config.zone_name}`)"
+          domain_match_pattern = "Host(`${var.cloudflare_config.zone_name}`) && PathPrefix(`/tautulli`)"
           middlewares = [
             {
               name      = data.terraform_remote_state.frontend.outputs.organizr.middlewares.auth_admin.name

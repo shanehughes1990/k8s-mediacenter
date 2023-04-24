@@ -14,7 +14,7 @@ module "radarr" {
       container_port = 7878
       ingress = [
         {
-          domain_match_pattern = "Host(`movies.${var.cloudflare_config.zone_name}`)"
+          domain_match_pattern = "Host(`${var.cloudflare_config.zone_name}`) && PathPrefix(`/radarr`)"
           middlewares = [
             {
               name      = data.terraform_remote_state.frontend.outputs.organizr.middlewares.auth_admin.name
