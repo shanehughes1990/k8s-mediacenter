@@ -15,6 +15,25 @@ resource "kubernetes_manifest" "organizr_forward_auth_admin" {
   }
 }
 
+resource "kubernetes_manifest" "organizr_redirect_web_to_root" {
+
+  manifest = {
+    "apiVersion" : "traefik.containo.us/v1alpha1",
+    "kind" : "Middleware",
+    "metadata" : {
+      "name" : "organizr-redirect-web-to-root"
+      "namespace" : kubernetes_namespace_v1.namespace.metadata[0].name
+    },
+    "spec" : {
+      "redirectRegex" : {
+        "permanent" : true
+        "regex" : "^https?://web.${var.cloudflare_config.zone_name}/(.*)"
+        "replacement" : "https://${var.cloudflare_config.zone_name}/$${1}"
+      }
+    }
+  }
+}
+
 module "organizr" {
   depends_on           = [kubernetes_namespace_v1.namespace]
   source               = "../../modules/deployment"
@@ -30,18 +49,16 @@ module "organizr" {
       container_port = 80
       ingress = [
         {
+          domain_match_pattern = "Host(`${var.cloudflare_config.zone_name}`)"
+        },
+        {
           domain_match_pattern = "Host(`web.${var.cloudflare_config.zone_name}`)"
-          # additional_annotations = {
-          #   "ingress.kubernetes.io/preserve-host" : true
-          #   # Forces a Permanent (301) redirect
-          #   "ingress.kubernetes.io/redirect-permanent" : true
-          #   # Specifies a regex for which URLs to redirect
-          #   "ingress.kubernetes.io/redirect-regex" : "^https://web.${var.cloudflare_config.zone_name}/(.*)"
-          #   # Here is where redirected URLs will end up
-          #   #   Notice the $3, which is the third capture
-          #   #   group from the above regex
-          #   "ingress.kubernetes.io/redirect-replacement" : "https://${var.cloudflare_config.zone_name}/$1"
-          # }
+          middlewares = [
+            {
+              name      = kubernetes_manifest.organizr_redirect_web_to_root.manifest.metadata.name
+              namespace = kubernetes_manifest.organizr_redirect_web_to_root.manifest.metadata.namespace
+            }
+          ]
         },
       ]
     },
