@@ -23,7 +23,7 @@ resource "helm_release" "traefik" {
       {
         "deployment" : {
           "enabled" : true,
-          "replicas" : 3,
+          "replicas" : 1,
         }
         "providers" : {
           "kubernetesCRD" : {
@@ -42,6 +42,9 @@ resource "helm_release" "traefik" {
         "logs" : {
           "general" : {
             "level" : "DEBUG"
+          }
+          "access" : {
+            "enabled" : true
           }
         }
         "service" : {
@@ -63,6 +66,15 @@ resource "helm_release" "traefik" {
             }
           }
         }
+        "experimental" : {
+          "plugins" : {
+            "enabled" : true
+          }
+        }
+        "additionalArguments" : [
+          "--experimental.plugins.traefik-real-ip.modulename=github.com/soulbalz/traefik-real-ip",
+          "--experimental.plugins.traefik-real-ip.version=v1.0.3",
+        ]
       }
     )
   ]

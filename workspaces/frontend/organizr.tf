@@ -9,7 +9,7 @@ resource "kubernetes_manifest" "organizr_forward_auth_admin" {
     },
     "spec" : {
       "forwardAuth" : {
-        "address" : "https://web.${var.cloudflare_config.zone_name}/api/v2/auth/$1"
+        "address" : "https://${var.cloudflare_config.zone_name}/api/v2/auth/$1"
       }
     }
   }

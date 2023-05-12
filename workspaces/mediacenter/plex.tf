@@ -16,7 +16,7 @@ module "plex" {
       cluster_ip     = "10.152.183.36"
       ingress = [
         {
-          domain_match_pattern = "Host(`media.${var.cloudflare_config.zone_name}`)"
+          domain_match_pattern = "Host(`${var.cloudflare_config.zone_name}`) && PathPrefix(`/web`)"
         },
       ]
     }
