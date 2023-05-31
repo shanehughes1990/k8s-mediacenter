@@ -14,6 +14,12 @@ module "cloud_sql_proxy" {
       service_type   = "NodePort"
       container_port = 3306
       node_port      = 30001
+    },
+    {
+      name           = "postgres-port"
+      service_type   = "NodePort"
+      container_port = 5432
+      node_port      = 30002
     }
   ]
 
