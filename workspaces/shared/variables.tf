@@ -31,3 +31,12 @@ variable "postgres_config" {
     password = string
   })
 }
+
+variable "mongo_config" {
+  description = "mongo databsae configuration"
+  sensitive   = true
+  type = object({
+    root_username = string
+    root_password = string
+  })
+}
