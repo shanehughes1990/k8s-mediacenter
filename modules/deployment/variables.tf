@@ -199,3 +199,39 @@ variable "container_security_context" {
 
   default = null
 }
+
+variable "readiness_probe" {
+  description = "Readiness probe config for the deployed pod containers"
+  type = object({
+    initial_delay_seconds = number
+    period_seconds        = number
+    success_threshold     = number
+    timeout_seconds       = number
+
+    http_get = optional(object({
+      path   = string
+      port   = number
+      scheme = optional(string, "HTTP")
+    }))
+  })
+
+  default = null
+}
+
+variable "liveness_probe" {
+  description = "Liveness probe config for the deployed pod containers"
+  type = object({
+    initial_delay_seconds = number
+    period_seconds        = number
+    success_threshold     = number
+    timeout_seconds       = number
+
+    http_get = optional(object({
+      path   = string
+      port   = number
+      scheme = optional(string, "HTTP")
+    }))
+  })
+
+  default = null
+}

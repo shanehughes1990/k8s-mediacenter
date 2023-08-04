@@ -7,6 +7,30 @@ module "plex" {
   image_tag            = "latest"
   metadata_annotations = local.keel_annotations
 
+  readiness_probe = {
+    initial_delay_seconds = 5
+    period_seconds        = 10
+    success_threshold     = 1
+    timeout_seconds       = 3
+
+    http_get = {
+      path = "/identity"
+      port = 32400
+    }
+  }
+
+  liveness_probe = {
+    initial_delay_seconds = 2
+    period_seconds        = 10
+    success_threshold     = 1
+    timeout_seconds       = 3
+
+    http_get = {
+      path = "/identity"
+      port = 32400
+    }
+  }
+
   ports = [
     {
       name           = "app-port"
