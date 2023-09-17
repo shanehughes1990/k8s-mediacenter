@@ -4,7 +4,7 @@ module "sonarr" {
   name                 = "sonarr"
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url            = "linuxserver/sonarr"
-  image_tag            = "develop"
+  image_tag            = "latest"
   image_pull_policy    = "Always"
   metadata_annotations = local.keel_annotations
 
