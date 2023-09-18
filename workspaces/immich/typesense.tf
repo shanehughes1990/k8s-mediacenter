@@ -4,7 +4,7 @@ module "typesense" {
   name                 = "typesense"
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url            = "typesense/typesense"
-  image_tag            = "0.24.1"
+  image_tag            = "0.25.1"
   metadata_annotations = local.keel_annotations
 
   ports = [

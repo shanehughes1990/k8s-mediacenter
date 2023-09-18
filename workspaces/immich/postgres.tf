@@ -4,7 +4,7 @@ module "postgres" {
   name                 = local.deployment_names.database
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url            = "postgres"
-  image_tag            = "latest"
+  image_tag            = "15"
   metadata_annotations = local.keel_annotations
 
   ports = [

@@ -5,6 +5,7 @@ module "web" {
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url            = "ghcr.io/immich-app/immich-web"
   image_tag            = local.immich_version
+  image_pull_policy    = "Always"
   metadata_annotations = local.keel_annotations
   command              = ["/bin/sh"]
   args                 = ["./entrypoint.sh"]
