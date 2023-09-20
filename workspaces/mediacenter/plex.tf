@@ -7,6 +7,11 @@ module "plex" {
   image_tag            = "latest"
   metadata_annotations = local.keel_annotations
 
+  resources = {
+    limits = {
+      memory = "24Gi"
+    }
+  }
   readiness_probe = {
     initial_delay_seconds = 5
     period_seconds        = 10
@@ -86,6 +91,7 @@ module "plex" {
     {
       name       = "transcoding"
       mount_path = "/transcoding"
+      size_limit = "24Gi"
     }
   ]
 }
