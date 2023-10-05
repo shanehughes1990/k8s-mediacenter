@@ -26,7 +26,7 @@ module "sonarr" {
     }
   ]
 
-  env = setunion(
+  env = concat(
     local.common_env,
     [
       {
@@ -37,6 +37,33 @@ module "sonarr" {
         name  = "TP_THEME"
         value = "plex"
       },
+      {
+        name      = "CONFIG_XML"
+        value     = <<-XML
+          <Config>
+            <LogLevel>trace</LogLevel>
+            <UpdateMechanism>Docker</UpdateMechanism>
+            <EnableSsl>False</EnableSsl>
+            <Port>8989</Port>
+            <SslPort>9898</SslPort>
+            <UrlBase>/sonarr</UrlBase>
+            <BindAddress>*</BindAddress>
+            <ApiKey>${var.sonarr_api_key}</ApiKey>
+            <AuthenticationMethod>None</AuthenticationMethod>
+            <LaunchBrowser>True</LaunchBrowser>
+            <Branch>main</Branch>
+            <InstanceName>Sonarr</InstanceName>
+            <SslCertHash></SslCertHash>
+            <SyslogPort>514</SyslogPort>
+            <AnalyticsEnabled>False</AnalyticsEnabled>
+          </Config>
+        XML
+        is_secret = true
+        is_volume = {
+          mount_path = "/config/config.xml"
+          sub_path   = "config.xml"
+        }
+      }
     ]
   )
 
@@ -58,45 +85,3 @@ module "sonarr" {
     },
   ]
 }
-
-# module "sonarr_test" {
-#   depends_on           = [kubernetes_namespace_v1.namespace]
-#   source               = "../../modules/deployment"
-#   name                 = "sonarr-test"
-#   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
-#   image_url            = "linuxserver/sonarr"
-#   image_tag            = "develop"
-#   image_pull_policy    = "Always"
-#   metadata_annotations = local.keel_annotations
-
-#   ports = [
-#     {
-#       name           = "app-port"
-#       container_port = 8989
-#       ingress = [
-#         {
-#           domains = [
-#             {
-#               name        = var.cloudflare_config.zone_name
-#               domain_path = "/sonarr"
-#             }
-#           ]
-#         },
-#       ]
-#     }
-#   ]
-
-#   env = setunion(
-#     local.common_env,
-#     [
-#       {
-#         name  = "DOCKER_MODS"
-#         value = "gilbn/theme.park:sonarr"
-#       },
-#       {
-#         name  = "TP_THEME"
-#         value = "plex"
-#       },
-#     ]
-#   )
-# }

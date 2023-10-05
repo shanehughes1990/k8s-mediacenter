@@ -31,3 +31,15 @@ variable "basic_auth" {
     password = string
   })
 }
+
+variable "sonarr_api_key" {
+  description = "api key for sonarr"
+  sensitive   = true
+  type        = string
+}
+
+variable "radarr_api_key" {
+  description = "api key for radarr"
+  sensitive   = true
+  type        = string
+}

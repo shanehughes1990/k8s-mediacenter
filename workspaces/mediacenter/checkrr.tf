@@ -4,7 +4,7 @@ module "checkrr" {
   name                 = "checkrr"
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url            = "aetaric/checkrr"
-  image_tag            = "latest"
+  image_tag            = "3.2.0"
   image_pull_policy    = "Always"
   metadata_annotations = local.keel_annotations
   args                 = ["-c", "/checkrr.yaml"]
@@ -15,8 +15,7 @@ module "checkrr" {
       container_port = 8585
       ingress = [
         {
-          domain_match_pattern = "Host(`checkrr.${var.cloudflare_config.zone_name}`)"
-          # domain_match_pattern = "Host(`checkrr.${var.cloudflare_config.zone_name}`) && PathPrefix(`/checkrr`)"
+          domain_match_pattern = "Host(`${var.cloudflare_config.zone_name}`) && PathPrefix(`/checkrr`)"
           middlewares = [
             {
               name      = data.terraform_remote_state.frontend.outputs.organizr.middlewares.auth_admin.name
@@ -60,14 +59,14 @@ module "checkrr" {
         },
         "webserver" : {
           "port" : 8585,
-          "baseurl" : "/"
+          "baseurl" : "/checkrr"
         },
         "arr" : {
           "radarr" : {
             "process" : true
             "service" : "radarr",
             "address" : "radarr-app-port.${kubernetes_namespace_v1.namespace.metadata[0].name}.svc",
-            "apiKey" : "8263790f05c7463ea839f85c9eaee8c3"
+            "apiKey" : "${var.radarr_api_key}"
             "baseurl" : "/radarr",
             "port" : 7878,
             "mappings" : {
@@ -78,7 +77,7 @@ module "checkrr" {
             "process" : true
             "service" : "sonarr",
             "address" : "sonarr-app-port.${kubernetes_namespace_v1.namespace.metadata[0].name}.svc",
-            "apiKey" : "4739f1becadf4b60a3ad8e7c03647cad"
+            "apiKey" : "${var.sonarr_api_key}"
             "baseurl" : "/sonarr",
             "port" : 8989,
             "mappings" : {
