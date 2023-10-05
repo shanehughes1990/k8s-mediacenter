@@ -80,16 +80,6 @@ resource "kubernetes_deployment_v1" "app" {
               protocol       = port.value.protocol
             }
           }
-
-          dynamic "env" {
-            // this is weird but here because you can have a list of env's without secrets so have to mark all as sensitive then nonsensitive
-            for_each = { for e, env in nonsensitive(sensitive(coalesce(var.env, []))) : e => env if env.is_secret == false }
-            content {
-              name  = env.value.name
-              value = env.value.value
-            }
-          }
-
           dynamic "env" {
             for_each = length({ for e, env in nonsensitive(sensitive(coalesce(var.env, []))) : e => env if env.is_secret == true }) > 0 ? [{
               name = "SECRET_CHANGE"
@@ -101,6 +91,16 @@ resource "kubernetes_deployment_v1" "app" {
               value = env.value.value
             }
           }
+
+          dynamic "env" {
+            // this is weird but here because you can have a list of env's without secrets so have to mark all as sensitive then nonsensitive
+            for_each = { for e, env in nonsensitive(sensitive(coalesce(var.env, []))) : e => env if env.is_secret == false }
+            content {
+              name  = env.value.name
+              value = env.value.value
+            }
+          }
+
 
           dynamic "env" {
             for_each = { for e, env in nonsensitive(sensitive(coalesce(var.env, []))) : e => env if env.is_secret == true && env.is_volume == null }
