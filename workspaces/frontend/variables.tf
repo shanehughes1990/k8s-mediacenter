@@ -2,6 +2,7 @@ variable "directory_config" {
   sensitive = false
   type = object({
     appdata = string
+    media   = string
   })
 }
 
