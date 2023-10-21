@@ -252,6 +252,7 @@ resource "kubernetes_deployment_v1" "app" {
                 content {
                   key  = items.value.name
                   path = items.value.is_volume.sub_path
+                  mode = volume.value.is_volume.default_mode
                 }
               }
             }
