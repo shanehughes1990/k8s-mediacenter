@@ -36,6 +36,7 @@ terraform.rc
 # Ignore files/folders that start with .
 .*
 !.terraform.lock.hcl
+!.devcontainer
 
 # Ignore any testing folders
 **/testing
@@ -44,5 +45,5 @@ terraform.rc
 modules/**
 !modules/deployment
 
-.local
 **/certs
+config
