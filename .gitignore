@@ -37,6 +37,7 @@ terraform.rc
 .*
 !.terraform.lock.hcl
 !.devcontainer
+!.vscode
 
 # Ignore any testing folders
 **/testing
