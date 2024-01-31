@@ -55,6 +55,15 @@ resource "kubernetes_deployment_v1" "app" {
       spec {
         service_account_name = var.service_account_name
 
+        dynamic "security_context" {
+          for_each = var.pod_security_context != null ? [var.pod_security_context] : []
+          content {
+            run_as_group = security_context.value.run_as_group
+            run_as_user  = security_context.value.run_as_user
+            fs_group     = security_context.value.fs_group
+          }
+        }
+
         container {
           image             = format("%s:%s", var.image_url, var.image_tag)
           image_pull_policy = var.image_pull_policy

@@ -235,3 +235,14 @@ variable "liveness_probe" {
 
   default = null
 }
+
+variable "pod_security_context" {
+  description = "PodSecurityContext holds pod-level security attributes and common container settings"
+  type = object({
+    run_as_group = optional(number, null)
+    run_as_user  = optional(number, null)
+    fs_group     = optional(number, null)
+  })
+
+  default = null
+}
