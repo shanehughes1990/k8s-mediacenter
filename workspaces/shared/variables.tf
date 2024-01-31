@@ -40,3 +40,13 @@ variable "mongo_config" {
     root_password = string
   })
 }
+
+variable "mysql_config" {
+  description = "mysql database configuration"
+  sensitive   = true
+  type = object({
+    root_password = string
+    username      = string
+    password      = string
+  })
+}
