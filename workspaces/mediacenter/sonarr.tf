@@ -8,10 +8,16 @@ module "sonarr" {
   image_pull_policy    = "Always"
   metadata_annotations = local.keel_annotations
 
+  pod_security_context = {
+    fs_group = 1000
+  }
+
   ports = [
     {
       name           = "app-port"
       container_port = 8989
+      service_type   = "NodePort"
+      node_port      = 32767
       ingress = [
         {
           domain_match_pattern = "Host(`${var.cloudflare_config.zone_name}`) && PathPrefix(`/sonarr`)"
@@ -37,33 +43,33 @@ module "sonarr" {
         name  = "TP_THEME"
         value = "plex"
       },
-      {
-        name      = "CONFIG_XML"
-        value     = <<-XML
-          <Config>
-            <LogLevel>trace</LogLevel>
-            <UpdateMechanism>Docker</UpdateMechanism>
-            <EnableSsl>False</EnableSsl>
-            <Port>8989</Port>
-            <SslPort>9898</SslPort>
-            <UrlBase>/sonarr</UrlBase>
-            <BindAddress>*</BindAddress>
-            <ApiKey>${var.sonarr_api_key}</ApiKey>
-            <AuthenticationMethod>None</AuthenticationMethod>
-            <LaunchBrowser>True</LaunchBrowser>
-            <Branch>main</Branch>
-            <InstanceName>Sonarr</InstanceName>
-            <SslCertHash></SslCertHash>
-            <SyslogPort>514</SyslogPort>
-            <AnalyticsEnabled>False</AnalyticsEnabled>
-          </Config>
-        XML
-        is_secret = true
-        is_volume = {
-          mount_path = "/config/config.xml"
-          sub_path   = "config.xml"
-        }
-      }
+      # {
+      #   name      = "CONFIG_XML"
+      #   value     = <<-XML
+      #     <Config>
+      #       <LogLevel>trace</LogLevel>
+      #       <UpdateMechanism>Docker</UpdateMechanism>
+      #       <EnableSsl>False</EnableSsl>
+      #       <Port>8989</Port>
+      #       <SslPort>9898</SslPort>
+      #       <UrlBase>/sonarr</UrlBase>
+      #       <BindAddress>*</BindAddress>
+      #       <ApiKey>${var.sonarr_api_key}</ApiKey>
+      #       <AuthenticationMethod>None</AuthenticationMethod>
+      #       <LaunchBrowser>True</LaunchBrowser>
+      #       <Branch>main</Branch>
+      #       <InstanceName>Sonarr</InstanceName>
+      #       <SslCertHash></SslCertHash>
+      #       <SyslogPort>514</SyslogPort>
+      #       <AnalyticsEnabled>False</AnalyticsEnabled>
+      #     </Config>
+      #   XML
+      #   is_secret = true
+      #   is_volume = {
+      #     mount_path = "/config/config.xml"
+      #     sub_path   = "config.xml"
+      #   }
+      # }
     ]
   )
 
@@ -78,6 +84,11 @@ module "sonarr" {
       host_path  = var.directory_config.tv_shows
       mount_path = "/data/media/tvshows"
     },
+    # {
+    #   name       = "anime"
+    #   host_path  = var.directory_config.anime
+    #   mount_path = var.directory_config.anime
+    # },
     {
       name       = "downloads"
       host_path  = format("%s/usenet", var.directory_config.downloads)

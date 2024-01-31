@@ -4,7 +4,7 @@ module "radarr" {
   name                 = "radarr"
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url            = "linuxserver/radarr"
-  image_tag            = "develop"
+  image_tag            = "latest"
   image_pull_policy    = "Always"
   metadata_annotations = local.keel_annotations
 
@@ -12,6 +12,8 @@ module "radarr" {
     {
       name           = "app-port"
       container_port = 7878
+      service_type   = "NodePort"
+      node_port      = 32766
       ingress = [
         {
           domain_match_pattern = "Host(`${var.cloudflare_config.zone_name}`) && PathPrefix(`/radarr`)"
@@ -37,33 +39,33 @@ module "radarr" {
         name  = "TP_THEME"
         value = "plex"
       },
-      {
-        name      = "CONFIG_XML"
-        value     = <<-XML
-          <Config>
-            <LogLevel>info</LogLevel>
-            <UrlBase>/radarr</UrlBase>
-            <UpdateMechanism>Docker</UpdateMechanism>
-            <BindAddress>*</BindAddress>
-            <Port>7878</Port>
-            <SslPort>9898</SslPort>
-            <EnableSsl>False</EnableSsl>
-            <LaunchBrowser>True</LaunchBrowser>
-            <ApiKey>${var.radarr_api_key}</ApiKey>
-            <AuthenticationMethod>Forms</AuthenticationMethod>
-            <Branch>develop</Branch>
-            <SslCertPath></SslCertPath>
-            <SslCertPassword></SslCertPassword>
-            <InstanceName>Radarr</InstanceName>
-            <AuthenticationRequired>DisabledForLocalAddresses</AuthenticationRequired>
-          </Config>
-        XML
-        is_secret = true
-        is_volume = {
-          mount_path = "/config/config.xml"
-          sub_path   = "config.xml"
-        }
-      }
+      # {
+      #   name      = "CONFIG_XML"
+      #   value     = <<-XML
+      #     <Config>
+      #       <LogLevel>info</LogLevel>
+      #       <UrlBase>/radarr</UrlBase>
+      #       <UpdateMechanism>Docker</UpdateMechanism>
+      #       <BindAddress>*</BindAddress>
+      #       <Port>7878</Port>
+      #       <SslPort>9898</SslPort>
+      #       <EnableSsl>False</EnableSsl>
+      #       <LaunchBrowser>True</LaunchBrowser>
+      #       <ApiKey>${var.radarr_api_key}</ApiKey>
+      #       <AuthenticationMethod>Forms</AuthenticationMethod>
+      #       <Branch>develop</Branch>
+      #       <SslCertPath></SslCertPath>
+      #       <SslCertPassword></SslCertPassword>
+      #       <InstanceName>Radarr</InstanceName>
+      #       <AuthenticationRequired>DisabledForLocalAddresses</AuthenticationRequired>
+      #     </Config>
+      #   XML
+      #   is_secret = true
+      #   is_volume = {
+      #     mount_path = "/config/config.xml"
+      #     sub_path   = "config.xml"
+      #   }
+      # }
     ]
   )
 

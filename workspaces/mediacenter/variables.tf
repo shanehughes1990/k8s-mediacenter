@@ -6,6 +6,7 @@ variable "directory_config" {
     media     = string
     tv_shows  = string
     movies    = string
+    anime     = string
   })
 }
 
