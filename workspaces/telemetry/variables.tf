@@ -30,3 +30,14 @@ variable "grafana_config" {
     database_password = string
   })
 }
+
+variable "influxdb_config" {
+  description = "Configuration for InfluxDB"
+  sensitive   = true
+  type = object({
+    username = string
+    password = string
+    org      = string
+    bucket   = string
+  })
+}
