@@ -81,8 +81,8 @@ module "radarr" {
       mount_path = "/data/media/movies"
     },
     {
-      name       = "downloads"
-      host_path  = format("%s/usenet", var.directory_config.downloads)
+      name       = "sabnzbd"
+      host_path  = format("%s/sabnzbd", var.directory_config.downloads)
       mount_path = "/data/downloads"
     },
   ]

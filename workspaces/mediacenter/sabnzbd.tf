@@ -45,16 +45,10 @@ module "sabnzbd" {
       host_path  = format("%s/%s", var.directory_config.appdata, "sabnzbd")
       mount_path = "/config"
     },
-    // TODO: Path to downloads/incomplete downloads
-    # {
-    #   name       = "downloads"
-    #   host_path  = format("%s/usenet", var.directory_config.downloads)
-    #   mount_path = "/data/downloads"
-    # },
-    # {
-    #   name       = "downloads"
-    #   host_path  = format("%s/usenet", var.directory_config.downloads)
-    #   mount_path = "/data/downloads"
-    # },
+    {
+      name       = "downloads"
+      host_path  = format("%s/sabnzbd", var.directory_config.downloads)
+      mount_path = "/data/downloads"
+    },
   ]
 }

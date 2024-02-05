@@ -90,8 +90,8 @@ module "sonarr" {
     #   mount_path = var.directory_config.anime
     # },
     {
-      name       = "downloads"
-      host_path  = format("%s/usenet", var.directory_config.downloads)
+      name       = "sabnzbd"
+      host_path  = format("%s/sabnzbd", var.directory_config.downloads)
       mount_path = "/data/downloads"
     },
   ]
