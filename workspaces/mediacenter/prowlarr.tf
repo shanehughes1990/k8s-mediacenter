@@ -13,7 +13,7 @@ module "prowlarr" {
       container_port = 9696
       ingress = [
         {
-          domain_match_pattern = "Host(`${var.cloudflare_zone_name}`) && PathPrefix(`${var.prowlarr_config.base_url}`)"
+          domain_match_pattern = "Host(`${var.cloudflare_config.zone_name}`) && PathPrefix(`${var.prowlarr_config.base_url}`)"
           middlewares = [
             {
               name      = data.terraform_remote_state.frontend.outputs.organizr.middlewares.auth_admin.name

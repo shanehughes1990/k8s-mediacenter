@@ -44,3 +44,11 @@ variable "radarr_api_key" {
   sensitive   = true
   type        = string
 }
+
+variable "prowlarr_config" {
+  sensitive = true
+  type = object({
+    base_url = string
+    api_key  = string
+  })
+}
