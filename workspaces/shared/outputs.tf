@@ -1,9 +1,3 @@
-output "redis" {
-  value = {
-    svc = "redis-app-port.${kubernetes_namespace_v1.namespace.metadata[0].name}.svc"
-  }
-}
-
 output "postgres" {
   sensitive = true
   value = {
