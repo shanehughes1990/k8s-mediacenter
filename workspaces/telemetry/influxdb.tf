@@ -9,7 +9,9 @@ module "influxdb" {
   ports = [
     {
       name           = "app-port"
+      service_type   = "NodePort"
       container_port = 8086
+      node_port      = 30004
     }
   ]
 

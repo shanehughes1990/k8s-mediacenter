@@ -2,18 +2,16 @@ module "microservices" {
   depends_on = [
     kubernetes_namespace_v1.namespace,
     module.postgres,
-    module.typesense,
     module.server,
   ]
-  source               = "../../modules/deployment"
-  name                 = local.deployment_names.microservices
-  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url            = "ghcr.io/immich-app/immich-server"
-  image_tag            = local.immich_version
-  image_pull_policy    = "Always"
-  metadata_annotations = local.keel_annotations
-  command              = ["/bin/sh"]
-  args                 = ["./start-microservices.sh"]
+  source            = "../../modules/deployment"
+  name              = local.deployment_names.microservices
+  namespace         = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url         = "ghcr.io/immich-app/immich-server"
+  image_tag         = local.immich_version
+  image_pull_policy = "Always"
+  command           = ["/bin/sh"]
+  args              = ["./start-microservices.sh"]
 
   ports = [
     {
@@ -35,7 +33,6 @@ module "microservices" {
     ],
     local.database_env,
     local.redis_env,
-    local.typesense_env
   )
 
   host_directories = [local.upload_host_directory]

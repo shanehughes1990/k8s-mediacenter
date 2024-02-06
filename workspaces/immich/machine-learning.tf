@@ -1,12 +1,11 @@
 module "machine_learning" {
-  depends_on           = [kubernetes_namespace_v1.namespace]
-  source               = "../../modules/deployment"
-  name                 = local.deployment_names.machine_learning
-  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url            = "ghcr.io/immich-app/immich-machine-learning"
-  image_tag            = local.immich_version
-  image_pull_policy    = "Always"
-  metadata_annotations = local.keel_annotations
+  depends_on        = [kubernetes_namespace_v1.namespace]
+  source            = "../../modules/deployment"
+  name              = local.deployment_names.machine_learning
+  namespace         = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url         = "ghcr.io/immich-app/immich-machine-learning"
+  image_tag         = local.immich_version
+  image_pull_policy = "Always"
 
   ports = [
     {

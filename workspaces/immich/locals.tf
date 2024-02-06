@@ -5,7 +5,7 @@ locals {
     "keel.sh/trigger"      = "poll"
   }
 
-  immich_version    = "release"
+  immich_version    = "v1.94.1"
   public_server_url = "photos.${var.cloudflare_config.zone_name}"
 
   deployment_names = {
@@ -59,30 +59,6 @@ locals {
     {
       name  = "REDIS_DBINDEX"
       value = 0
-    },
-  ]
-
-  typesense_env = [
-    {
-      name  = "TYPESENSE_ENABLED"
-      value = true
-    },
-    {
-      name  = "TYPESENSE_HOST"
-      value = "${local.deployment_names.typesense}-app-port.${kubernetes_namespace_v1.namespace.metadata[0].name}.svc"
-    },
-    {
-      name  = "TYPESENSE_PORT"
-      value = 8108
-    },
-    {
-      name  = "TYPESENSE_PROTOCOL"
-      value = "http"
-    },
-    {
-      name      = "TYPESENSE_API_KEY"
-      value     = var.typesense_api_key
-      is_secret = true
     },
   ]
 
