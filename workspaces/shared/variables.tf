@@ -50,3 +50,13 @@ variable "mysql_config" {
     password      = string
   })
 }
+
+variable "mariadb_config" {
+  description = "mysql database configuration"
+  sensitive   = true
+  type = object({
+    root_password = string
+    username      = string
+    password      = string
+  })
+}
