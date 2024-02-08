@@ -14,6 +14,12 @@ module "dbeaver" {
       ingress = [
         {
           domain_match_pattern = "Host(`dbeaver.${var.cloudflare_config.zone_name}`)"
+          middlewares = [
+            {
+              name      = kubernetes_manifest.organizr_forward_auth_admin.manifest.metadata.name
+              namespace = kubernetes_manifest.organizr_forward_auth_admin.manifest.metadata.namespace
+            }
+          ]
         },
       ]
     },
