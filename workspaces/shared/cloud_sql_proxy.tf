@@ -4,7 +4,7 @@ module "cloud_sql_proxy" {
   name                 = "cloud-sql-proxy"
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url            = "gcr.io/cloud-sql-connectors/cloud-sql-proxy"
-  image_tag            = "2.0.0-preview.3"
+  image_tag            = "2.8.2"
   metadata_annotations = local.keel_annotations
   args                 = setunion(var.cloud_sql_proxy_config.instances, ["--address=0.0.0.0"])
 

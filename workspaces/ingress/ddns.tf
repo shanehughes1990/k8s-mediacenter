@@ -3,7 +3,7 @@ module "cloudflare_ddns" {
   source               = "../../modules/deployment"
   name                 = "cloudflare-ddns"
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url            = "cr.hotio.dev/hotio/cloudflareddns"
+  image_url            = "ghcr.io/hotio/cloudflareddns"
   image_tag            = "latest"
   metadata_annotations = local.keel_annotations
 
