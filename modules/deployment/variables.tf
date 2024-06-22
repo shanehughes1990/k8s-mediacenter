@@ -59,7 +59,6 @@ variable "ports" {
     container_port = number
     protocol       = optional(string, "TCP")
     service_type   = optional(string, "ClusterIP")
-    cluster_ip     = optional(string, null)
     node_port      = optional(number, null)
     ingress = optional(list(object({
       domain_match_pattern   = string
