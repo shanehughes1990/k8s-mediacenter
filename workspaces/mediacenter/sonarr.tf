@@ -6,7 +6,6 @@ module "sonarr" {
   image_url         = "linuxserver/sonarr"
   image_tag         = "4.0.2"
   image_pull_policy = "Always"
-  # metadata_annotations = local.keel_annotations
 
   pod_security_context = {
     fs_group = 1000

@@ -6,7 +6,6 @@ module "radarr" {
   image_url         = "linuxserver/radarr"
   image_tag         = "5.4.6"
   image_pull_policy = "Always"
-  # metadata_annotations = local.keel_annotations
 
   ports = [
     {

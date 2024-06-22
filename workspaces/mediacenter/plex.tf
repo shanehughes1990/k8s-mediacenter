@@ -1,11 +1,10 @@
 module "plex" {
-  depends_on           = [kubernetes_namespace_v1.namespace]
-  source               = "../../modules/deployment"
-  name                 = "plex"
-  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url            = "plexinc/pms-docker"
-  image_tag            = "1.40.0.7998-c29d4c0c8"
-  metadata_annotations = local.keel_annotations
+  depends_on = [kubernetes_namespace_v1.namespace]
+  source     = "../../modules/deployment"
+  name       = "plex"
+  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url  = "plexinc/pms-docker"
+  image_tag  = "1.40.0.7998-c29d4c0c8"
 
   resources = {
     limits = {
