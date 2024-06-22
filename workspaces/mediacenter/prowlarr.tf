@@ -6,6 +6,7 @@ module "prowlarr" {
   image_url            = "lscr.io/linuxserver/prowlarr"
   image_tag            = "latest"
   metadata_annotations = local.keel_annotations
+  replicas             = 0
 
   ports = [
     {

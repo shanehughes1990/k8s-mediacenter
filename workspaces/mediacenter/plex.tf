@@ -3,8 +3,8 @@ module "plex" {
   source               = "../../modules/deployment"
   name                 = "plex"
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url            = "linuxserver/plex"
-  image_tag            = "latest"
+  image_url            = "plexinc/pms-docker"
+  image_tag            = "1.40.0.7998-c29d4c0c8"
   metadata_annotations = local.keel_annotations
 
   resources = {
@@ -90,7 +90,7 @@ module "plex" {
   ram_disks = [
     {
       name       = "transcoding"
-      mount_path = "/transcoding"
+      mount_path = "/transcode"
       size_limit = "24Gi"
     }
   ]

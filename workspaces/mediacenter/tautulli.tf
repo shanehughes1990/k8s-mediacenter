@@ -6,6 +6,7 @@ module "tautulli" {
   image_url            = "linuxserver/tautulli"
   image_tag            = "latest"
   metadata_annotations = local.keel_annotations
+  replicas             = 0
 
   ports = [
     {

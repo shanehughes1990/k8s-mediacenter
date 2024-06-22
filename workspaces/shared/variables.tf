@@ -60,3 +60,11 @@ variable "mariadb_config" {
     password      = string
   })
 }
+
+variable "postgresql_config" {
+  description = "postgresql database configuration"
+  sensitive   = true
+  type = object({
+    root_password = string
+  })
+}

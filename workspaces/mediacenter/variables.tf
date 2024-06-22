@@ -52,3 +52,19 @@ variable "prowlarr_config" {
     api_key  = string
   })
 }
+
+variable "sonarr_config" {
+  sensitive = true
+  type = object({
+    postgres_username = string
+    postgres_password = string
+  })
+}
+
+variable "radarr_config" {
+  sensitive = true
+  type = object({
+    postgres_username = string
+    postgres_password = string
+  })
+}
