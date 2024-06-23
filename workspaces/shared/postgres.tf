@@ -27,7 +27,7 @@ module "postgres" {
     {
       name       = "data"
       host_path  = format("%s/%s", var.directory_config.appdata, "postgresql")
-      mount_path = "/bitnami/mysql/data"
+      mount_path = "/bitnami/postgresql"
     }
   ]
 }
