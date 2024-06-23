@@ -29,9 +29,13 @@ variable "vaultwarden_config" {
   })
 }
 
-variable "pgadmin_password" {
-  description = "password for pgadmin"
-  type        = string
+variable "pgadmin_config" {
+  sensitive   = true
+  description = "config for pgadmin"
+  type = object({
+    email    = string
+    password = string
+  })
 }
 
 variable "keel_config" {
