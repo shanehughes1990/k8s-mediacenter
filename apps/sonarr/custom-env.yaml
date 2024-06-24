@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr-test
+  namespace: mediacenter
+spec:
+  template:
+    spec:
+      containers:
+        - name: sonarr # (1)
+          env:
+            - name: CUSTOM_ENV_VARIABLE
+              value: Value defined by Kustomize ❤️
