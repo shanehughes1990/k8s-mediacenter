@@ -14,7 +14,6 @@ spec:
     type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: sonarr
     spec:
@@ -40,6 +39,7 @@ spec:
               value: plex
           readinessProbe:
             failureThreshold: 3
+            initialDelaySeconds: 1
             httpGet:
               path: /sonarr/ping
               port: app-port
