@@ -4,7 +4,7 @@ module "sonarr" {
   name              = "sonarr"
   namespace         = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url         = "linuxserver/sonarr"
-  image_tag         = "4.0.2"
+  image_tag         = "latest"
   image_pull_policy = "Always"
 
   pod_security_context = {
@@ -42,33 +42,6 @@ module "sonarr" {
         name  = "TP_THEME"
         value = "plex"
       },
-      # {
-      #   name      = "CONFIG_XML"
-      #   value     = <<-XML
-      #     <Config>
-      #       <LogLevel>trace</LogLevel>
-      #       <UpdateMechanism>Docker</UpdateMechanism>
-      #       <EnableSsl>False</EnableSsl>
-      #       <Port>8989</Port>
-      #       <SslPort>9898</SslPort>
-      #       <UrlBase>/sonarr</UrlBase>
-      #       <BindAddress>*</BindAddress>
-      #       <ApiKey>${var.sonarr_api_key}</ApiKey>
-      #       <AuthenticationMethod>None</AuthenticationMethod>
-      #       <LaunchBrowser>True</LaunchBrowser>
-      #       <Branch>main</Branch>
-      #       <InstanceName>Sonarr</InstanceName>
-      #       <SslCertHash></SslCertHash>
-      #       <SyslogPort>514</SyslogPort>
-      #       <AnalyticsEnabled>False</AnalyticsEnabled>
-      #     </Config>
-      #   XML
-      #   is_secret = true
-      #   is_volume = {
-      #     mount_path = "/config/config.xml"
-      #     sub_path   = "config.xml"
-      #   }
-      # }
     ]
   )
 

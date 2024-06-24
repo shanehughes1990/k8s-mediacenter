@@ -1,11 +1,10 @@
 module "radarr" {
-  depends_on        = [kubernetes_namespace_v1.namespace]
-  source            = "../../modules/deployment"
-  name              = "radarr"
-  namespace         = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url         = "linuxserver/radarr"
-  image_tag         = "5.4.6"
-  image_pull_policy = "Always"
+  depends_on = [kubernetes_namespace_v1.namespace]
+  source     = "../../modules/deployment"
+  name       = "radarr"
+  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url  = "linuxserver/radarr"
+  image_tag  = "latest"
 
   ports = [
     {
@@ -38,33 +37,6 @@ module "radarr" {
         name  = "TP_THEME"
         value = "plex"
       },
-      # {
-      #   name      = "CONFIG_XML"
-      #   value     = <<-XML
-      #     <Config>
-      #       <LogLevel>info</LogLevel>
-      #       <UrlBase>/radarr</UrlBase>
-      #       <UpdateMechanism>Docker</UpdateMechanism>
-      #       <BindAddress>*</BindAddress>
-      #       <Port>7878</Port>
-      #       <SslPort>9898</SslPort>
-      #       <EnableSsl>False</EnableSsl>
-      #       <LaunchBrowser>True</LaunchBrowser>
-      #       <ApiKey>${var.radarr_api_key}</ApiKey>
-      #       <AuthenticationMethod>Forms</AuthenticationMethod>
-      #       <Branch>develop</Branch>
-      #       <SslCertPath></SslCertPath>
-      #       <SslCertPassword></SslCertPassword>
-      #       <InstanceName>Radarr</InstanceName>
-      #       <AuthenticationRequired>DisabledForLocalAddresses</AuthenticationRequired>
-      #     </Config>
-      #   XML
-      #   is_secret = true
-      #   is_volume = {
-      #     mount_path = "/config/config.xml"
-      #     sub_path   = "config.xml"
-      #   }
-      # }
     ]
   )
 

@@ -5,7 +5,6 @@ module "prowlarr" {
   namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url  = "lscr.io/linuxserver/prowlarr"
   image_tag  = "latest"
-  replicas   = 0
 
   ports = [
     {
@@ -36,33 +35,6 @@ module "prowlarr" {
         name  = "TP_THEME"
         value = "plex"
       },
-      {
-        name      = "CONFIG_XML"
-        value     = <<-XML
-          <Config>
-            <BindAddress>*</BindAddress>
-            <Port>9696</Port>
-            <SslPort>6969</SslPort>
-            <EnableSsl>False</EnableSsl>
-            <LaunchBrowser>True</LaunchBrowser>
-            <ApiKey>${var.prowlarr_config.api_key}</ApiKey>
-            <AuthenticationMethod>Forms</AuthenticationMethod>
-            <AuthenticationRequired>DisabledForLocalAddresses</AuthenticationRequired>
-            <Branch>master</Branch>
-            <LogLevel>info</LogLevel>
-            <SslCertPath></SslCertPath>
-            <SslCertPassword></SslCertPassword>
-            <UrlBase>${var.prowlarr_config.base_url}</UrlBase>
-            <InstanceName>Prowlarr</InstanceName>
-            <UpdateMechanism>Docker</UpdateMechanism>
-          </Config>
-        XML
-        is_secret = true
-        is_volume = {
-          mount_path = "/config/config.xml"
-          sub_path   = "config.xml"
-        }
-      }
     ],
   )
 
