@@ -38,6 +38,11 @@ spec:
               value: gilbn/theme.park:sonarr
             - name: TP_THEME
               value: plex
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /sonarr/ping
+              port: app-port
           livenessProbe:
             failureThreshold: 3
             httpGet:
