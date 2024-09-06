@@ -74,6 +74,7 @@ resource "kubernetes_deployment_v1" "app" {
           dynamic "security_context" {
             for_each = var.container_security_context != null ? [var.container_security_context] : []
             content {
+              privileged                 = security_context.value.privileged
               allow_privilege_escalation = security_context.value.allow_privilege_escalation
               read_only_root_filesystem  = security_context.value.read_only_root_filesystem
               run_as_user                = security_context.value.run_as_user

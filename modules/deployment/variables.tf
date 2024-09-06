@@ -190,6 +190,7 @@ variable "resources" {
 variable "container_security_context" {
   description = "SecurityContext holds pod-level security attributes and common container settings"
   type = object({
+    privileged                 = optional(bool, false)
     allow_privilege_escalation = optional(bool, false)
     read_only_root_filesystem  = optional(bool, false)
     run_as_user                = optional(number, null)
