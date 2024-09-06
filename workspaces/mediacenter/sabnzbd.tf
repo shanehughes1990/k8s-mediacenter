@@ -1,10 +1,11 @@
 module "sabnzbd" {
-  depends_on = [kubernetes_namespace_v1.namespace]
-  source     = "../../modules/deployment"
-  name       = "sabnzbd"
-  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url  = "lscr.io/linuxserver/sabnzbd"
-  image_tag  = "latest"
+  depends_on           = [kubernetes_namespace_v1.namespace]
+  source               = "../../modules/deployment"
+  name                 = "sabnzbd"
+  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url            = "lscr.io/linuxserver/sabnzbd"
+  image_tag            = "latest"
+  metadata_annotations = local.keel_annotations
 
   ports = [
     {

@@ -1,10 +1,11 @@
 module "prowlarr" {
-  depends_on = [kubernetes_namespace_v1.namespace]
-  source     = "../../modules/deployment"
-  name       = "prowlarr"
-  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url  = "lscr.io/linuxserver/prowlarr"
-  image_tag  = "latest"
+  depends_on           = [kubernetes_namespace_v1.namespace]
+  source               = "../../modules/deployment"
+  name                 = "prowlarr"
+  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url            = "lscr.io/linuxserver/prowlarr"
+  image_tag            = "latest"
+  metadata_annotations = local.keel_annotations
 
   ports = [
     {

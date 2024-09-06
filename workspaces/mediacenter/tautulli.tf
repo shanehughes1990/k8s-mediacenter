@@ -1,11 +1,12 @@
 module "tautulli" {
-  depends_on = [kubernetes_namespace_v1.namespace]
-  source     = "../../modules/deployment"
-  name       = "tautulli"
-  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url  = "linuxserver/tautulli"
-  image_tag  = "latest"
-  replicas   = 0
+  depends_on           = [kubernetes_namespace_v1.namespace]
+  source               = "../../modules/deployment"
+  name                 = "tautulli"
+  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url            = "linuxserver/tautulli"
+  image_tag            = "latest"
+  metadata_annotations = local.keel_annotations
+  replicas             = 0
 
   ports = [
     {
