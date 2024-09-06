@@ -1,10 +1,11 @@
 module "pgadmin" {
-  depends_on = [kubernetes_namespace_v1.namespace]
-  source     = "../../modules/deployment"
-  name       = "pgadmin"
-  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url  = "dpage/pgadmin4"
-  image_tag  = "latest"
+  depends_on           = [kubernetes_namespace_v1.namespace]
+  source               = "../../modules/deployment"
+  name                 = "pgadmin"
+  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url            = "dpage/pgadmin4"
+  image_tag            = "latest"
+  metadata_annotations = local.keel_annotations
 
   ports = [
     {
