@@ -1,11 +1,11 @@
 module "radarr" {
-  depends_on = [kubernetes_namespace_v1.namespace]
-  source     = "../../modules/deployment"
-  name       = "radarr"
-  namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url  = "linuxserver/radarr"
-  image_tag  = "latest"
-  # metadata_annotations = local.keel_annotations
+  depends_on           = [kubernetes_namespace_v1.namespace]
+  source               = "../../modules/deployment"
+  name                 = "radarr"
+  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url            = "linuxserver/radarr"
+  image_tag            = "latest"
+  metadata_annotations = local.keel_annotations
 
   ports = [
     {

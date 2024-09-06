@@ -1,12 +1,11 @@
 module "sonarr" {
-  depends_on        = [kubernetes_namespace_v1.namespace]
-  source            = "../../modules/deployment"
-  name              = "sonarr"
-  namespace         = kubernetes_namespace_v1.namespace.metadata[0].name
-  image_url         = "linuxserver/sonarr"
-  image_tag         = "latest"
-  image_pull_policy = "Always"
-  # metadata_annotations = local.keel_annotations
+  depends_on           = [kubernetes_namespace_v1.namespace]
+  source               = "../../modules/deployment"
+  name                 = "sonarr"
+  namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
+  image_url            = "linuxserver/sonarr"
+  image_tag            = "latest"
+  metadata_annotations = local.keel_annotations
 
   pod_security_context = {
     fs_group = 1000
