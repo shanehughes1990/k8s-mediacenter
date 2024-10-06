@@ -4,7 +4,7 @@ module "postgres" {
   name                 = "postgresql"
   namespace            = kubernetes_namespace_v1.namespace.metadata[0].name
   image_url            = "bitnami/postgresql"
-  image_tag            = "latest"
+  image_tag            = "16"
   metadata_annotations = local.keel_annotations
 
   ports = [
