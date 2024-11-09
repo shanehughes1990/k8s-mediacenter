@@ -37,7 +37,7 @@ resource "helm_release" "signoz" {
   namespace  = kubernetes_namespace_v1.namespace.metadata[0].name
   repository = "https://charts.signoz.io"
   chart      = "signoz"
-  version    = "0.56.0"
+  version    = "0.54.2"
   name       = "signoz"
   wait       = false
 
@@ -48,6 +48,11 @@ resource "helm_release" "signoz" {
           "clusterName" : "microk8s",
           "storageClass" : "data-ssd-hostpath",
           "cloud" : "other",
+        },
+        "otelCollector" : {
+          "service" : {
+            "type" : "NodePort"
+          },
         },
       }
     ),
