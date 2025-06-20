@@ -20,18 +20,7 @@
 		}
 	},
 	"features": {
-    "ghcr.io/devcontainers/features/terraform:1": {
-			"version": "latest",
-			"tflint": "latest",
-			"terragrunt": "none",
-			"installTerraformDocs": true,
-			"installTFsec": true
-		},
-    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-			"version": "latest",
-			"helm": "latest",
-			"minikube": "none"
-		}
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
 	},
 	"remoteUser": "vscode"
 }
