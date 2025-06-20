@@ -1,0 +1,71 @@
+services:
+  organizr:
+    image: organizr/organizr:latest
+    container_name: organizr
+    restart: unless-stopped
+    networks:
+      - mediacenter
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - branch=v2-master
+      - fpm=false
+    volumes:
+      - ${CONFIG_DIR}/organizr:/config
+    ports:
+      - "80:80"
+
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    networks:
+      - mediacenter
+    environment:
+      - SENDS_ALLOWED=true
+      - EMERGENCY_ACCESS_ALLOWED=true
+      - DISABLE_ICON_DOWNLOAD=true
+      - SIGNUPS_ALLOWED=false
+      - ADMIN_TOKEN=${VAULTWARDEN_ADMIN_TOKEN}
+      - DISABLE_ADMIN_TOKEN=false
+      - INVITATIONS_ALLOWED=false
+      - DOMAIN=https://vault.${CLOUDFLARE_ZONE_NAME}
+      - SMTP_HOST=${VAULTWARDEN_SMTP_HOST}
+      - SMTP_PORT=${VAULTWARDEN_SMTP_PORT}
+      - SMTP_FROM_NAME=${VAULTWARDEN_SMTP_FROM_NAME}
+      - SMTP_FROM=${VAULTWARDEN_SMTP_USERNAME}
+      - SMTP_USERNAME=${VAULTWARDEN_SMTP_USERNAME}
+      - SMTP_PASSWORD=${VAULTWARDEN_SMTP_PASSWORD}
+      - SMTP_TIMEOUT=${VAULTWARDEN_SMTP_TIMEOUT}
+    volumes:
+      - ${CONFIG_DIR}/vaultwarden:/data
+    ports:
+      - "8080:80"
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    networks:
+      - mediacenter
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - ${CONFIG_DIR}/pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+
+  scrutiny:
+    image: ghcr.io/analogj/scrutiny:master-omnibus
+    container_name: scrutiny
+    restart: unless-stopped
+    privileged: true
+    networks:
+      - mediacenter
+    volumes:
+      - ${CONFIG_DIR}/scrutiny/config:/opt/scrutiny/config
+      - ${CONFIG_DIR}/scrutiny/influxdb:/opt/scrutiny/influxdb
+    ports:
+      - "8080:8080"

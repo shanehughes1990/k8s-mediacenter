@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: bitnami/postgresql:16
+    container_name: postgres
+    restart: unless-stopped
+    networks:
+      - mediacenter
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+    volumes:
+      - ${CONFIG_DIR}/postgresql:/bitnami/postgresql
+
+  redis:
+    image: bitnami/redis:latest
+    container_name: redis
+    restart: unless-stopped
+    networks:
+      - mediacenter
+    ports:
+      - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  cloud-sql-proxy:
+    image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.8.2
+    container_name: cloud-sql-proxy
+    restart: unless-stopped
+    networks:
+      - mediacenter
+    ports:
+      - "3306:3306"
+      - "5432:5432"
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials.json
+    volumes:
+      - ./cloudsql-credentials.json:/credentials.json:ro
+    # TODO: Fill in the correct command arguments for your Cloud SQL instances
+    command: ["--address=0.0.0.0"]
+
+networks:
+  mediacenter:
+    driver: bridge

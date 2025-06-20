@@ -1,0 +1,36 @@
+name: mediacenter
+include:
+  - docker-compose-mediacenter.yml
+  - docker-compose-apps.yml
+  - docker-compose-database.yml
+
+networks:
+  mediacenter:
+    driver: bridge
+
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    # TODO: Add ports, volumes, command, and labels as needed for your setup
+    networks:
+      - mediacenter
+
+  cloudflare-ddns:
+    image: ghcr.io/hotio/cloudflareddns:latest
+    container_name: cloudflare-ddns
+    restart: unless-stopped
+    networks:
+      - mediacenter
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK=002
+      - INTERVAL=300
+      - DETECTION_MODE=dig-whoami.cloudflare
+      - LOG_LEVEL=2
+      - CF_RECORDTYPES=A
+      - CF_APITOKEN=${CLOUDFLARE_API_TOKEN}
+      - CF_HOSTS=${CLOUDFLARE_ZONE_NAME};*.${CLOUDFLARE_ZONE_NAME}
+      - CF_ZONES=${CLOUDFLARE_ZONE_NAME}
