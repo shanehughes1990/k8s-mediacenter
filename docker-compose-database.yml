@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: bitnami/postgresql:16
+    image: postgres:latest
     container_name: postgres
     restart: unless-stopped
     networks:
@@ -8,36 +8,24 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
+      - POSTGRESQL_APP_USERNAME_1=${SONARR_POSTGRES_USERNAME}
+      - POSTGRESQL_APP_PASSWORD_1=${SONARR_POSTGRES_PASSWORD}
+      - POSTGRESQL_APP_DATABASES_1=sonarr-main,sonarr-log
+      - POSTGRESQL_APP_USERNAME_2=${RADARR_POSTGRES_USERNAME}
+      - POSTGRESQL_APP_PASSWORD_2=${RADARR_POSTGRES_PASSWORD}
+      - POSTGRESQL_APP_DATABASES_2=radarr-main,radarr-log
+      - POSTGRESQL_APP_USERNAME_3=${PROWLARR_POSTGRES_USERNAME}
+      - POSTGRESQL_APP_PASSWORD_3=${PROWLARR_POSTGRES_PASSWORD}
+      - POSTGRESQL_APP_DATABASES_3=prowlarr-main,prowlarr-log
     volumes:
-      - ${CONFIG_DIR}/postgresql:/bitnami/postgresql
-
-  redis:
-    image: bitnami/redis:latest
-    container_name: redis
-    restart: unless-stopped
-    networks:
-      - mediacenter
-    ports:
-      - "6379:6379"
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-
-  cloud-sql-proxy:
-    image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.8.2
-    container_name: cloud-sql-proxy
-    restart: unless-stopped
-    networks:
-      - mediacenter
-    ports:
-      - "3306:3306"
-      - "5432:5432"
-    environment:
-      - GOOGLE_APPLICATION_CREDENTIALS=/credentials.json
-    volumes:
-      - ./cloudsql-credentials.json:/credentials.json:ro
-    # TODO: Fill in the correct command arguments for your Cloud SQL instances
-    command: ["--address=0.0.0.0"]
+      - ${CONFIG_DIR}/postgresql:/var/lib/postgresql/data
+      - ./scripts/postgres-init/ensure-databases.sh:/docker-entrypoint-initdb.d/ensure-databases.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 networks:
   mediacenter:

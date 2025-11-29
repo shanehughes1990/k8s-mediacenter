@@ -1,8 +1,10 @@
 name: mediacenter
+
 include:
+  - docker-compose-database.yml
   - docker-compose-mediacenter.yml
   - docker-compose-apps.yml
-  - docker-compose-database.yml
+  - docker-compose-utilities.yml
 
 networks:
   mediacenter:
