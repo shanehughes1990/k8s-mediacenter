@@ -1,0 +1,26 @@
+#!/bin/bash
+sudo fdisk -l | grep Disk | sort | grep '\/sd\|\/nvm' | while read line; do
+	Device=$(echo $line | cut -d ' ' -f 2 | cut -d ':' -f 1)
+	driveInfo=$(udevadm info --query=all -n $Device)
+	if [[ $Device == *nvme* ]]; then
+		Mode="NVMe"
+	else
+		ID_PATH=$(echo "$driveInfo" | grep 'ID_PATH=')
+		echo $ID_PATH | grep -q -i USB && Mode="USB"
+		echo $ID_PATH | grep -q -i ATA && Mode="ATA"
+		echo $ID_PATH | grep -q -i SAS && Mode="SAS"
+		echo $ID_PATH | grep -q -i SCSI && Mode="SCSI"
+	fi
+	echo $ID_PATH | grep -q -i Virtual && Mode="Virtual-$Mode"
+
+	deviceName=$(echo $Device | cut -c 6-)
+	Rotational=$(cat /sys/block/$deviceName/queue/rotational)
+	[[ "$Rotational" == "0" && "$deviceName" == *nvme* ]] && Type='NVMe'
+	[[ "$Rotational" == "0" && "$deviceName" == *sd* ]] && Type='SSD'
+	[[ "$Rotational" == "1" ]] && Type='HDD'
+
+	ID_MODEL=$(echo "$driveInfo" | grep 'ID_MODEL=' | sed 's\[\]x20\ \g' | cut -d '=' -f 2)
+	ID_SERIAL_SHORT=$(echo "$driveInfo" | grep 'ID_SERIAL_SHORT=' | cut -d '=' -f 2)
+	Size=$(echo $line | cut -d ' ' -f 3-4)
+	echo "Device: $Device, Size: $Size Model: $ID_MODEL, Serial: $ID_SERIAL_SHORT, Mode: $Mode, Type: $Type" | tr -s ' ' | sed 's\ ,\,\g'
+done
