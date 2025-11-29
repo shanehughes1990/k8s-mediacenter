@@ -45,6 +45,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_DIR}/overseerr:/config
+      - ./.config/overseerr/settings.json:/config/settings.json
 
   tautulli:
     image: lscr.io/linuxserver/tautulli:latest
@@ -77,6 +78,7 @@ services:
       - TP_THEME=plex
     volumes:
       - ${CONFIG_DIR}/sonarr:/config
+      - ./.config/sonarr/config.xml:/config/config.xml
       - ${TV_SHOWS_DIR}:/data/media/tvshows
       - ${DOWNLOADS_DIR}/sabnzbd:/data/downloads
 
@@ -96,6 +98,7 @@ services:
       - TP_THEME=plex
     volumes:
       - ${CONFIG_DIR}/radarr:/config
+      - ./.config/radarr/config.xml:/config/config.xml
       - ${MOVIES_DIR}:/data/media/movies
       - ${DOWNLOADS_DIR}/sabnzbd:/data/downloads
 
@@ -115,6 +118,7 @@ services:
       - TP_THEME=plex
     volumes:
       - ${CONFIG_DIR}/prowlarr:/config
+      - ./.config/prowlarr/config.xml:/config/config.xml
 
   sabnzbd:
     image: lscr.io/linuxserver/sabnzbd:latest
@@ -132,6 +136,7 @@ services:
       - TP_THEME=plex
     volumes:
       - ${CONFIG_DIR}/sabnzbd:/config
+      - ./.config/sabnzbd/sabnzbd.ini:/config/sabnzbd.ini
       - ${DOWNLOADS_DIR}/sabnzbd:/data/downloads
 
 networks:
