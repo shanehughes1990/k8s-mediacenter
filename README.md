@@ -39,3 +39,20 @@ A containerized media center solution using Docker Compose.
 - [ ] **SuggestArr**: Automates media content recommendations and download requests based on user activity.
 - [ ] **Watchlistarr**: Syncs Plex Watchlist to Sonarr/Radarr.
 - [ ] **Wizarr**: Advanced user invitation and management system for Jellyfin, Plex, Emby, etc.
+
+## Organizr Alternatives
+
+Research into alternatives for the dashboard/organizer role:
+
+- **[Homepage](https://github.com/gethomepage/homepage)**: A modern, secure, highly customizable application dashboard with integrations for over 100 services and translations into multiple languages. Configured via YAML.
+    - **RBAC**: No. Static dashboard; everyone sees the same configuration.
+- **[Homarr](https://github.com/homarr-labs/homarr)**: A sleek, modern dashboard with a drag-and-drop grid system, tight integration with the *Arr stack, and built-in media request management.
+    - **RBAC**: Partial. Supports permissions at the **Board** level (e.g., Admin Board vs. Family Board), but cannot hide individual items on a shared board.
+- **[Heimdall](https://github.com/linuxserver/Heimdall)**: A simple, user-friendly application dashboard/launcher. Features "Enhanced Apps" that display live data from supported applications directly on the tiles.
+    - **RBAC**: No. Multi-user support exists, but each user manages their own separate, personal dashboard.
+- **[Dashy](https://github.com/lissy93/dashy)**: A privacy-respecting, highly customizable dashboard. Supports widgets, status monitoring, themes, and is configured via YAML or UI.
+    - **RBAC**: Yes. Supports granular visibility rules (e.g., `showForUsers: ['admin']`) to hide specific links or sections based on the logged-in user.
+- **[Homer](https://github.com/bastienwirtz/homer)**: A dead simple, static homepage for your server. Very lightweight, configured via a single YAML file, served as a static HTML page.
+    - **RBAC**: No. Static dashboard; everyone sees the same configuration.
+- **[Fenrus](https://github.com/revenz/fenrus)**: A personal homepage/dashboard that supports multi-user environments, guest access, and user-specific dashboards.
+    - **RBAC**: No. Multi-user support exists, but users manage their own personal dashboards.
