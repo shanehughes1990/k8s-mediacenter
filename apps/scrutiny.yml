@@ -24,10 +24,13 @@ services:
       - SCRUTINY_API_ENDPOINT=http://localhost:8080
       - SCRUTINY_WEB=true
       - SCRUTINY_COLLECTOR=true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.scrutiny.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/scrutiny`)"
+      - "traefik.http.routers.scrutiny.entrypoints=websecure"
+      - "traefik.http.services.scrutiny.loadbalancer.server.port=8080"
     networks:
       - mediacenter
-    ports:
-      - 8080:8080
     volumes:
       - ${CONFIG_DIR}/scrutiny:/config
       - /run/udev:/run/udev:ro

@@ -1,0 +1,24 @@
+services:
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DB_TYPE=postgres
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=seerr
+      - DB_USER=${SEERR_POSTGRES_USERNAME}
+      - DB_PASS=${SEERR_POSTGRES_PASSWORD}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.seerr.rule=Host(`request.${CLOUDFLARE_ZONE_NAME}`)"
+      - "traefik.http.routers.seerr.entrypoints=websecure"
+      - "traefik.http.services.seerr.loadbalancer.server.port=5055"
+    networks:
+      - mediacenter
+    volumes:
+      - ${CONFIG_DIR}/seerr:/app/config

@@ -4,7 +4,7 @@ include:
   - apps/cloud-sql-proxy.yml
   - apps/cloudflare-ddns.yml
   - apps/organizr.yml
-  - apps/overseerr.yml
+  - apps/seerr.yml
   - apps/plex.yml
   - apps/postgres.yml
   - apps/prowlarr.yml
