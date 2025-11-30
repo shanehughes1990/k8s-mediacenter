@@ -1,3 +1,4 @@
+#! NOT BEING MIGRATED
 module "pgadmin" {
   depends_on           = [kubernetes_namespace_v1.namespace]
   source               = "../../modules/deployment"
