@@ -9,10 +9,13 @@ services:
       - TZ=${TZ}
       - DOCKER_MODS=gilbn/theme.park:prowlarr
       - TP_THEME=plex
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prowlarr.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/prowlarr`)"
+      - "traefik.http.routers.prowlarr.entrypoints=websecure"
+      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
     networks:
       - mediacenter
-    ports:
-      - "9696:9696"
     volumes:
       - ${CONFIG_DIR}/prowlarr:/config
       - ./.config/prowlarr/config.xml:/config/config.xml

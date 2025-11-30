@@ -7,9 +7,12 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tautulli.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/tautulli`)"
+      - "traefik.http.routers.tautulli.entrypoints=websecure"
+      - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
     networks:
       - mediacenter
-    ports:
-      - "8181:8181"
     volumes:
       - ${CONFIG_DIR}/tautulli:/config

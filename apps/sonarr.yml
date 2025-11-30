@@ -9,10 +9,13 @@ services:
       - TZ=${TZ}
       - DOCKER_MODS=gilbn/theme.park:sonarr
       - TP_THEME=plex
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/sonarr`)"
+      - "traefik.http.routers.sonarr.entrypoints=websecure"
+      - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
     networks:
       - mediacenter
-    ports:
-      - "8989:8989"
     volumes:
       - ${CONFIG_DIR}/sonarr:/config
       - ./.config/sonarr/config.xml:/config/config.xml

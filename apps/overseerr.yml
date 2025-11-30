@@ -7,10 +7,13 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.overseerr.rule=Host(`request.${CLOUDFLARE_ZONE_NAME}`)"
+      - "traefik.http.routers.overseerr.entrypoints=websecure"
+      - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
     networks:
       - mediacenter
-    ports:
-      - "5055:5055"
     volumes:
       - ${CONFIG_DIR}/overseerr:/config
       - ./.config/overseerr/settings.json:/config/settings.json

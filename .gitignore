@@ -33,8 +33,13 @@ docker-compose.override.yml
 !.env.example
 
 # --- Configuration & Secrets ---
+# Ignore private configuration (secrets, local overrides)
 .config/
-config/
+
+# Ensure public configuration is tracked
+!config/
+
+# Ignore certs anywhere else just in case
 **/certs/
 
 # --- IDE & OS ---

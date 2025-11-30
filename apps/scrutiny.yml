@@ -29,5 +29,5 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - /path/to/config:/config
+      - ${CONFIG_DIR}/scrutiny:/config
       - /run/udev:/run/udev:ro

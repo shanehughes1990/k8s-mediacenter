@@ -9,10 +9,13 @@ services:
       - TZ=${TZ}
       - DOCKER_MODS=gilbn/theme.park:sabnzbd
       - TP_THEME=plex
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sabnzbd.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/sabnzbd`)"
+      - "traefik.http.routers.sabnzbd.entrypoints=websecure"
+      - "traefik.http.services.sabnzbd.loadbalancer.server.port=8080"
     networks:
       - mediacenter
-    ports:
-      - "8080:8080"
     volumes:
       - ${CONFIG_DIR}/sabnzbd:/config
       - ./.config/sabnzbd/sabnzbd.ini:/config/sabnzbd.ini

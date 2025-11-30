@@ -9,10 +9,13 @@ services:
       - TZ=${TZ}
       - DOCKER_MODS=gilbn/theme.park:radarr
       - TP_THEME=plex
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.radarr.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/radarr`)"
+      - "traefik.http.routers.radarr.entrypoints=websecure"
+      - "traefik.http.services.radarr.loadbalancer.server.port=7878"
     networks:
       - mediacenter
-    ports:
-      - "7878:7878"
     volumes:
       - ${CONFIG_DIR}/radarr:/config
       - ./.config/radarr/config.xml:/config/config.xml

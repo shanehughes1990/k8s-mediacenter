@@ -12,10 +12,13 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
       - PLEX_CLAIM=${PLEX_CLAIM}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plex.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/web`)"
+      - "traefik.http.routers.plex.entrypoints=websecure"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"
     networks:
       - mediacenter
-    ports:
-      - "32400:32400"
     volumes:
       - ${CONFIG_DIR}/plex:/config
       - ${MEDIA_DIR}:/data/media

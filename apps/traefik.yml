@@ -4,21 +4,18 @@ services:
     container_name: traefik
     restart: unless-stopped
     command:
-      - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.filename=/etc/traefik/dynamic.yml"
+      - "--providers.file.watch=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      # Uncomment the following lines to enable Let's Encrypt
-      # - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      # - "--certificatesresolvers.myresolver.acme.email=your-email@example.com"
-      # - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     networks:
       - mediacenter
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./letsencrypt:/letsencrypt
+      - ./.config/traefik/certs:/certs:ro
+      - ./config/traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
