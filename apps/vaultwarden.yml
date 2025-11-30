@@ -1,21 +1,4 @@
 services:
-  organizr:
-    image: organizr/organizr:latest
-    container_name: organizr
-    restart: unless-stopped
-    networks:
-      - mediacenter
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - branch=v2-master
-      - fpm=false
-    volumes:
-      - ${CONFIG_DIR}/organizr:/config
-    ports:
-      - "80:80"
-
   vaultwarden:
     image: vaultwarden/server:latest
     container_name: vaultwarden

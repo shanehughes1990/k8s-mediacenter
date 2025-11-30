@@ -1,0 +1,20 @@
+services:
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    networks:
+      - mediacenter
+    ports:
+      - "7878:7878"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DOCKER_MODS=gilbn/theme.park:radarr
+      - TP_THEME=plex
+    volumes:
+      - ${CONFIG_DIR}/radarr:/config
+      - ./.config/radarr/config.xml:/config/config.xml
+      - ${MOVIES_DIR}:/data/media/movies
+      - ${DOWNLOADS_DIR}/sabnzbd:/data/downloads

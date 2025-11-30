@@ -1,0 +1,7 @@
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    # TODO: Add ports, volumes, command, and labels as needed for your setup
+    networks:
+      - mediacenter
