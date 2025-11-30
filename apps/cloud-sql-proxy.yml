@@ -4,13 +4,12 @@ services:
     container_name: cloud-sql-proxy
     restart: unless-stopped
     entrypoint: /bin/sh
-    # Decode base64 credentials to file, then run proxy
     command: -c "echo \"$$GOOGLE_APPLICATION_CREDENTIALS_BASE64\" | base64 -d > /credentials.json && /cloud-sql-proxy --address=0.0.0.0 ${CLOUD_SQL_INSTANCES}"
-    ports:
-      - "30001:3306" # MySQL
-      - "30002:5432" # Postgres
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/credentials.json
       - GOOGLE_APPLICATION_CREDENTIALS_BASE64=${CLOUDSQL_BASE64_CREDENTIALS}
     networks:
       - mediacenter
+    ports:
+      - "30001:3306" # MySQL
+      - "30002:5432" # Postgres

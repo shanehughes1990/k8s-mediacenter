@@ -3,13 +3,13 @@ services:
     image: lscr.io/linuxserver/tautulli:latest
     container_name: tautulli
     restart: unless-stopped
-    networks:
-      - mediacenter
-    ports:
-      - "8181:8181"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+    networks:
+      - mediacenter
+    ports:
+      - "8181:8181"
     volumes:
       - ${CONFIG_DIR}/tautulli:/config

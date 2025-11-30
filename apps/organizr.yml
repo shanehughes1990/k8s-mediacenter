@@ -3,15 +3,15 @@ services:
     image: organizr/organizr:latest
     container_name: organizr
     restart: unless-stopped
-    networks:
-      - mediacenter
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
       - branch=v2-master
       - fpm=false
-    volumes:
-      - ${CONFIG_DIR}/organizr:/config
+    networks:
+      - mediacenter
     ports:
       - "80:80"
+    volumes:
+      - ${CONFIG_DIR}/organizr:/config

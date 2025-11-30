@@ -3,8 +3,6 @@ services:
     image: ghcr.io/hotio/cloudflareddns:latest
     container_name: cloudflare-ddns
     restart: unless-stopped
-    networks:
-      - mediacenter
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -17,3 +15,5 @@ services:
       - CF_APITOKEN=${CLOUDFLARE_API_TOKEN}
       - CF_HOSTS=${CLOUDFLARE_ZONE_NAME};*.${CLOUDFLARE_ZONE_NAME}
       - CF_ZONES=${CLOUDFLARE_ZONE_NAME}
+    networks:
+      - mediacenter

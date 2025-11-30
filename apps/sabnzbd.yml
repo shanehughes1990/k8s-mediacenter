@@ -3,16 +3,16 @@ services:
     image: lscr.io/linuxserver/sabnzbd:latest
     container_name: sabnzbd
     restart: unless-stopped
-    networks:
-      - mediacenter
-    ports:
-      - "8080:8080"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
       - DOCKER_MODS=gilbn/theme.park:sabnzbd
       - TP_THEME=plex
+    networks:
+      - mediacenter
+    ports:
+      - "8080:8080"
     volumes:
       - ${CONFIG_DIR}/sabnzbd:/config
       - ./.config/sabnzbd/sabnzbd.ini:/config/sabnzbd.ini

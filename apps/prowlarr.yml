@@ -3,16 +3,16 @@ services:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
     restart: unless-stopped
-    networks:
-      - mediacenter
-    ports:
-      - "9696:9696"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
       - DOCKER_MODS=gilbn/theme.park:prowlarr
       - TP_THEME=plex
+    networks:
+      - mediacenter
+    ports:
+      - "9696:9696"
     volumes:
       - ${CONFIG_DIR}/prowlarr:/config
       - ./.config/prowlarr/config.xml:/config/config.xml

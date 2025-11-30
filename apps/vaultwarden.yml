@@ -3,8 +3,6 @@ services:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     restart: unless-stopped
-    networks:
-      - mediacenter
     environment:
       - SENDS_ALLOWED=true
       - EMERGENCY_ACCESS_ALLOWED=true
@@ -21,7 +19,12 @@ services:
       - SMTP_USERNAME=${VAULTWARDEN_SMTP_USERNAME}
       - SMTP_PASSWORD=${VAULTWARDEN_SMTP_PASSWORD}
       - SMTP_TIMEOUT=${VAULTWARDEN_SMTP_TIMEOUT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vaultwarden.rule=Host(`vault.${CLOUDFLARE_ZONE_NAME}`)"
+      - "traefik.http.routers.vaultwarden.entrypoints=web"
+      - "traefik.http.services.vaultwarden.loadbalancer.server.port=80"
+    networks:
+      - mediacenter
     volumes:
       - ${CONFIG_DIR}/vaultwarden:/data
-    ports:
-      - "8080:80"

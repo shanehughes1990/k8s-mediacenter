@@ -3,19 +3,19 @@ services:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
     restart: unless-stopped
-    networks:
-      - mediacenter
     deploy:
       resources:
         limits:
           memory: 24g
-    ports:
-      - "32400:32400"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
       - PLEX_CLAIM=${PLEX_CLAIM}
+    networks:
+      - mediacenter
+    ports:
+      - "32400:32400"
     volumes:
       - ${CONFIG_DIR}/plex:/config
       - ${MEDIA_DIR}:/data/media

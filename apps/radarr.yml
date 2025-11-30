@@ -3,16 +3,16 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     restart: unless-stopped
-    networks:
-      - mediacenter
-    ports:
-      - "7878:7878"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
       - DOCKER_MODS=gilbn/theme.park:radarr
       - TP_THEME=plex
+    networks:
+      - mediacenter
+    ports:
+      - "7878:7878"
     volumes:
       - ${CONFIG_DIR}/radarr:/config
       - ./.config/radarr/config.xml:/config/config.xml

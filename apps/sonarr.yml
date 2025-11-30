@@ -3,16 +3,16 @@ services:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     restart: unless-stopped
-    networks:
-      - mediacenter
-    ports:
-      - "8989:8989"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
       - DOCKER_MODS=gilbn/theme.park:sonarr
       - TP_THEME=plex
+    networks:
+      - mediacenter
+    ports:
+      - "8989:8989"
     volumes:
       - ${CONFIG_DIR}/sonarr:/config
       - ./.config/sonarr/config.xml:/config/config.xml
