@@ -1,58 +1,59 @@
-# k8s-mediacenter
+# 🚀 Ultimate Docker Media Center 🍿
 
-A containerized media center solution using Docker Compose.
+Welcome to the **ultimate** home media stack! Powered by the pure, unadulterated joy of **Docker Compose**. It's sleek, it's fast, and it's ready to binge-watch! 🎉
 
-## Current Apps
+## 🌟 The Star-Studded Cast
 
-### Core & Infrastructure
-- **Traefik**: Reverse proxy and load balancer.
-- **Cloudflare-DDNS**: Dynamic DNS updater for Cloudflare.
-- **Postgres**: Relational database service.
-- **Cloud SQL Proxy**: Proxy for connecting to Google Cloud SQL instances.
-- **Watchtower**: Automates Docker container base image updates.
+### 🎬 The Main Event
+*   **[Plex](https://www.plex.tv/)** 🍿 - The king of media streaming. Now supercharged with **NVIDIA GPU** transcoding! 🏎️💨
+*   **[Overseerr](https://overseerr.dev/)** 🔮 - The beautiful way to request your next obsession. (Running as `seerr`)
+*   **[Tautulli](https://tautulli.com/)** 📊 - Keep an eye on who's watching what. Big Brother for your server! 👁️
 
-### Media Server & Management
-- **Plex**: Media server for organizing and streaming video.
-- **Overseerr**: Request management and media discovery tool for the Plex ecosystem.
-- **Tautulli**: Monitoring and tracking tool for Plex.
-- **Sonarr**: Smart TV show PVR for newsgroup and bittorrent users.
-- **Radarr**: Movie collection manager for Usenet and BitTorrent users.
-- **Prowlarr**: Indexer manager/proxy built on the popular arr .net/react stack.
+### 🤖 The Automation Army (*Arr Stack)
+*   **[Sonarr](https://sonarr.tv/)** 📺 - Never miss an episode of your favorite TV shows.
+*   **[Radarr](https://radarr.video/)** 🎬 - Your personal movie curator.
+*   **[Prowlarr](https://prowlarr.com/)** 🕸️ - The indexer manager to rule them all.
+*   **[SABnzbd](https://sabnzbd.org/)** 📥 - The heavy lifter for binary newsgroups.
 
-### Downloaders
-- **Sabnzbd**: Open-source binary newsreader.
+### 🛡️ The Guardians & Infrastructure
+*   **[Traefik](https://traefik.io/)** 🚦 - The modern reverse proxy. SSL everywhere! 🔒
+*   **[PostgreSQL](https://www.postgresql.org/)** 🐘 - The rock-solid database powering the *Arrs.
+*   **[Cloudflare DDNS](https://github.com/hotio/cloudflareddns)** ☁️ - Keeping us found, no matter the IP.
+*   **[Cloud SQL Proxy](https://github.com/GoogleCloudPlatform/cloud-sql-proxy)** ☁️ - Securely connecting to Google Cloud databases.
+*   **[Vaultwarden](https://github.com/dani-garcia/vaultwarden)** 🔐 - Keep your secrets safe (and self-hosted!).
+*   **[Watchtower](https://containrrr.dev/watchtower/)** 🗼 - Updates your containers automatically while you sleep. 😴
+*   **[Scrutiny](https://github.com/AnalogJ/scrutiny)** 🩺 - Checking your hard drives' health so you don't have to.
+*   **[Organizr](https://organizr.app/)** 📑 - One tab to rule them all.
 
-### Utilities & Tools
-- **Organizr**: HTPC/Homelab Services Organizer.
-- **Vaultwarden**: Unofficial Bitwarden compatible server written in Rust.
-- **Scrutiny**: Hard Drive S.M.A.R.T Monitoring, Historical Trends & Real World Failure Thresholds.
+## ✨ Cool Features
+*   **GPU Acceleration**: Plex is configured to use that sweet NVIDIA power.
+*   **Auto-Magic DB Init**: Our custom `postgresql-init` script handles user and DB creation automatically! 🧙‍♂️
+*   **Secure by Default**: Traefik handles HTTPS certificates automatically.
+*   **Modular Config**: Everything is neatly organized in `apps/` and `config/`.
 
-## Future Apps
+## 🚀 Blast Off!
 
-- [ ] **Decluttarr**: Automates the clean-up for *arr download queues, keeping them free of stalled / redundant downloads.
-- [ ] **Flemmarr**: Automates configuration for *arr apps using YAML configuration files.
-- [ ] **Huntarr.io**: Automates discovering missing and upgrading your media collection.
-- [ ] **Maintainerr**: Maintenance tool for the Plex ecosystem to manage and clean up media.
-- [ ] **Notifiarr**: Notification aggregation, system monitoring, and Discord integration for the media stack.
-- [ ] **Profilarr**: Configuration management tool for Radarr/Sonarr that automates importing and version control of custom formats and quality profiles.
-- [ ] **Recyclarr**: Automatically syncs TRaSH guides recommended settings to Sonarr/Radarr instances.
-- [ ] **SuggestArr**: Automates media content recommendations and download requests based on user activity.
-- [ ] **Watchlistarr**: Syncs Plex Watchlist to Sonarr/Radarr.
-- [ ] **Wizarr**: Advanced user invitation and management system for Jellyfin, Plex, Emby, etc.
+1.  **Clone the repo** (you probably already did this).
+2.  **Set up your secrets**:
+    *   Copy `.env.example` to `.env` and fill it in! 📝
+    *   Put your certs in `secrets/certs/`.
+3.  **Launch**:
+    ```bash
+    docker compose up -d
+    ```
+4.  **Enjoy!** 🍿
 
-## Organizr Alternatives
+## 🔮 Future Dreams
+*   [ ] **Decluttarr** 🧹 - Clean up the mess.
+*   [ ] **Flemmarr** 📄 - Config as Code for your Arrs.
+*   [ ] **Huntarr.io** 🏹 - Find what you're missing.
+*   [ ] **Maintainerr** 🛠️ - Keep your library fresh.
+*   [ ] **Notifiarr** 🔔 - Ding! Your download is ready.
+*   [ ] **Profilarr** ⚙️ - Sync your profiles.
+*   [ ] **Recyclarr** ♻️ - Sync those TRaSH guides!
+*   [ ] **SuggestArr** 💡 - "You might also like..."
+*   [ ] **Watchlistarr** 📋 - Sync your Plex watchlist.
+*   [ ] **Wizarr** 🧙 - Invite your friends with style.
 
-Research into alternatives for the dashboard/organizer role:
-
-- **[Homepage](https://github.com/gethomepage/homepage)**: A modern, secure, highly customizable application dashboard with integrations for over 100 services and translations into multiple languages. Configured via YAML.
-    - **RBAC**: No. Static dashboard; everyone sees the same configuration.
-- **[Homarr](https://github.com/homarr-labs/homarr)**: A sleek, modern dashboard with a drag-and-drop grid system, tight integration with the *Arr stack, and built-in media request management.
-    - **RBAC**: Partial. Supports permissions at the **Board** level (e.g., Admin Board vs. Family Board), but cannot hide individual items on a shared board.
-- **[Heimdall](https://github.com/linuxserver/Heimdall)**: A simple, user-friendly application dashboard/launcher. Features "Enhanced Apps" that display live data from supported applications directly on the tiles.
-    - **RBAC**: No. Multi-user support exists, but each user manages their own separate, personal dashboard.
-- **[Dashy](https://github.com/lissy93/dashy)**: A privacy-respecting, highly customizable dashboard. Supports widgets, status monitoring, themes, and is configured via YAML or UI.
-    - **RBAC**: Yes. Supports granular visibility rules (e.g., `showForUsers: ['admin']`) to hide specific links or sections based on the logged-in user.
-- **[Homer](https://github.com/bastienwirtz/homer)**: A dead simple, static homepage for your server. Very lightweight, configured via a single YAML file, served as a static HTML page.
-    - **RBAC**: No. Static dashboard; everyone sees the same configuration.
-- **[Fenrus](https://github.com/revenz/fenrus)**: A personal homepage/dashboard that supports multi-user environments, guest access, and user-specific dashboards.
-    - **RBAC**: No. Multi-user support exists, but users manage their own personal dashboards.
+---
+*Built with ❤️ and too much coffee.* ☕
