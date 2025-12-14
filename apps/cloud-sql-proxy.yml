@@ -3,13 +3,18 @@ services:
     image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.8.2-alpine
     container_name: cloud-sql-proxy
     restart: unless-stopped
-    entrypoint: /bin/sh
-    command: -c "echo \"$$GOOGLE_APPLICATION_CREDENTIALS_BASE64\" | base64 -d > /credentials.json && /cloud-sql-proxy --address=0.0.0.0 ${CLOUD_SQL_INSTANCES}"
+    command:
+      - "--address=0.0.0.0"
+      - "sasp-ca:northamerica-northeast1:sasp-core-ca?port=3306"
+      - "gec-production-sql:northamerica-northeast1:gec-postgres?port=5432"
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/credentials.json
-      - GOOGLE_APPLICATION_CREDENTIALS_BASE64=${CLOUDSQL_BASE64_CREDENTIALS}
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     ports:
       - "30001:3306" # MySQL
       - "30002:5432" # Postgres
+    volumes:
+      - ../secrets/google_application_credentials.json:/credentials.json:ro

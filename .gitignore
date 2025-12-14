@@ -40,7 +40,7 @@ docker-compose.override.yml
 !config/
 
 # Ignore certs anywhere else just in case
-**/certs/
+**/secrets/
 
 # --- IDE & OS ---
 .vscode/

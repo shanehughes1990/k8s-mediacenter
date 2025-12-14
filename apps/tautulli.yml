@@ -12,6 +12,7 @@ services:
       - "traefik.http.routers.tautulli.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/tautulli`)"
       - "traefik.http.routers.tautulli.entrypoints=websecure"
       - "traefik.http.services.tautulli.loadbalancer.server.port=8181"
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     volumes:

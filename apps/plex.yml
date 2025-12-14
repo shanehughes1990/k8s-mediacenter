@@ -3,20 +3,30 @@ services:
     image: lscr.io/linuxserver/plex:latest
     container_name: plex
     restart: unless-stopped
+    runtime: nvidia
     deploy:
       resources:
         limits:
           memory: 24g
+        reservations:
+          devices:
+            - capabilities:
+                - gpu
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
       - PLEX_CLAIM=${PLEX_CLAIM}
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.plex.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/web`)"
       - "traefik.http.routers.plex.entrypoints=websecure"
       - "traefik.http.services.plex.loadbalancer.server.port=32400"
+      - "com.centurylinklabs.watchtower.enable=true"
+    ports:
+      - "32400:32400/tcp"
     networks:
       - mediacenter
     volumes:

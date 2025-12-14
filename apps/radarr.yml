@@ -14,6 +14,7 @@ services:
       - "traefik.http.routers.radarr.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/radarr`)"
       - "traefik.http.routers.radarr.entrypoints=websecure"
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     volumes:

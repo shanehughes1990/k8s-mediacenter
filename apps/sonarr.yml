@@ -14,6 +14,7 @@ services:
       - "traefik.http.routers.sonarr.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/sonarr`)"
       - "traefik.http.routers.sonarr.entrypoints=websecure"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     volumes:

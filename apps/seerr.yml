@@ -18,6 +18,7 @@ services:
       - "traefik.http.routers.seerr.rule=Host(`request.${CLOUDFLARE_ZONE_NAME}`)"
       - "traefik.http.routers.seerr.entrypoints=websecure"
       - "traefik.http.services.seerr.loadbalancer.server.port=5055"
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     volumes:

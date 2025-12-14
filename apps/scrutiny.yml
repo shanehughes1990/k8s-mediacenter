@@ -29,6 +29,7 @@ services:
       - "traefik.http.routers.scrutiny.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/scrutiny`)"
       - "traefik.http.routers.scrutiny.entrypoints=websecure"
       - "traefik.http.services.scrutiny.loadbalancer.server.port=8080"
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     volumes:

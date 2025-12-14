@@ -3,6 +3,10 @@ services:
     image: containrrr/watchtower
     container_name: watchtower
     restart: unless-stopped
+    environment:
+      - WATCHTOWER_LABEL_ENABLE=true
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     volumes:

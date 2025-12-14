@@ -14,6 +14,7 @@ services:
       - "traefik.http.routers.sabnzbd.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/sabnzbd`)"
       - "traefik.http.routers.sabnzbd.entrypoints=websecure"
       - "traefik.http.services.sabnzbd.loadbalancer.server.port=8080"
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     volumes:

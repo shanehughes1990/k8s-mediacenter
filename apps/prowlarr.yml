@@ -14,6 +14,7 @@ services:
       - "traefik.http.routers.prowlarr.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/prowlarr`)"
       - "traefik.http.routers.prowlarr.entrypoints=websecure"
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     volumes:

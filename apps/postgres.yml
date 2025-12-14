@@ -22,6 +22,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     ports:
