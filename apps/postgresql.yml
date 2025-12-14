@@ -1,0 +1,48 @@
+services:
+  postgresql:
+    image: postgres:latest
+    container_name: postgresql
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - mediacenter
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${CONFIG_DIR}/postgresql:/var/lib/postgresql
+
+  postgresql-init:
+    image: postgres:latest
+    container_name: postgresql-init
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    environment:
+      PGHOST: postgresql
+      PGUSER: postgres
+      PGPASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRESQL_APP_USERNAME_1: ${SONARR_POSTGRES_USERNAME}
+      POSTGRESQL_APP_PASSWORD_1: ${SONARR_POSTGRES_PASSWORD}
+      POSTGRESQL_APP_DATABASES_1: sonarr-main,sonarr-log
+      POSTGRESQL_APP_USERNAME_2: ${RADARR_POSTGRES_USERNAME}
+      POSTGRESQL_APP_PASSWORD_2: ${RADARR_POSTGRES_PASSWORD}
+      POSTGRESQL_APP_DATABASES_2: radarr-main,radarr-log
+      POSTGRESQL_APP_USERNAME_3: ${PROWLARR_POSTGRES_USERNAME}
+      POSTGRESQL_APP_PASSWORD_3: ${PROWLARR_POSTGRES_PASSWORD}
+      POSTGRESQL_APP_DATABASES_3: prowlarr-main,prowlarr-log
+      POSTGRESQL_APP_USERNAME_4: ${SEERR_POSTGRES_USERNAME}
+      POSTGRESQL_APP_PASSWORD_4: ${SEERR_POSTGRES_PASSWORD}
+      POSTGRESQL_APP_DATABASES_4: seerr
+    volumes:
+      - ../scripts/postgres-init/ensure-databases.sh:/ensure-databases.sh
+    command: ["bash", "/ensure-databases.sh"]
+    networks:
+      - mediacenter

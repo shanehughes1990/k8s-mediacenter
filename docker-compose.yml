@@ -6,7 +6,7 @@ include:
   # - apps/organizr.yml
   # - apps/seerr.yml
   - apps/plex.yml
-  # - apps/postgres.yml
+  - apps/postgresql.yml
   # - apps/prowlarr.yml
   # - apps/radarr.yml
   # - apps/sabnzbd.yml
