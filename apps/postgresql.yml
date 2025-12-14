@@ -42,7 +42,7 @@ services:
       POSTGRESQL_APP_PASSWORD_4: ${SEERR_POSTGRES_PASSWORD}
       POSTGRESQL_APP_DATABASES_4: seerr
     volumes:
-      - ../scripts/postgres-init/ensure-databases.sh:/ensure-databases.sh
+      - ../config/postgres-init/ensure-databases.sh:/ensure-databases.sh
     command: ["bash", "/ensure-databases.sh"]
     networks:
       - mediacenter
