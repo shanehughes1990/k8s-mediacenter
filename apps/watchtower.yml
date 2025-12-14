@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     environment:
       - WATCHTOWER_LABEL_ENABLE=true
+      - DOCKER_API_VERSION=1.44
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
