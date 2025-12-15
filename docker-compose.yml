@@ -2,7 +2,9 @@ name: mediacenter
 
 include:
   - apps/cloud-sql-proxy.yml
-  # - apps/cloudflare-ddns.yml
+  - apps/cloudflare-ddns.yml
+  - apps/authentik.yml
+  - apps/homarr.yml
   # - apps/organizr.yml
   # - apps/seerr.yml
   - apps/plex.yml

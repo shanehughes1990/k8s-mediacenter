@@ -1,61 +1,31 @@
-# --- Terraform ---
-# Local .terraform directories
-**/.terraform/*
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# .tfstate files
-*.tfstate
-*.tfstate.*
+# Editors
+.idea/
+*.swp
+*.swo
 
-# Crash log files
-crash.log
-crash.*.log
-
-# Exclude all .tfvars files
-*.tfvars
-*.tfvars.json
-
-# Ignore override files
-override.tf
-override.tf.json
-*_override.tf
-*_override.tf.json
-
-# Ignore CLI configuration files
-.terraformrc
-terraform.rc
-
-# --- Docker ---
-docker-compose.override.yml
-
-# --- Environment Variables ---
-.env
-.env.*
-!.env.example
-
-# --- Configuration & Secrets ---
-# Ignore private configuration (secrets, local overrides)
-.config/
-
-# Ensure public configuration is tracked
-!config/
-
-# Ignore certs anywhere else just in case
-**/secrets/
-
-# --- IDE & OS ---
-.vscode/
+# VS Code
+.vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.idea/
-.DS_Store
-Thumbs.db
+!.vscode/mcp.json
 
-# --- Project Specific ---
-**/testing
-**/nvidia
+# Docker
+.env
+docker-compose.override.yml
 
-# Modules (Preserved from previous configuration)
-modules/**
-!modules/deployment
+# Secrets and Credentials
+secrets/
+*.pem
+*.key
+*.crt
