@@ -11,6 +11,7 @@ include:
   - apps/postgresql.yml
   - apps/prowlarr.yml
   - apps/radarr.yml
+  # - apps/recyclarr.yml
   # - apps/sabnzbd.yml
   # - apps/scrutiny.yml
   - apps/sonarr.yml
