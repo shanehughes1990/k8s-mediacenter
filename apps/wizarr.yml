@@ -1,0 +1,21 @@
+services:
+  wizarr:
+    image: ghcr.io/wizarrrr/wizarr:latest
+    container_name: wizarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DISABLE_BUILTIN_AUTH=true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wizarr.rule=Host(`invites.${CLOUDFLARE_ZONE_NAME}`)"
+      - "traefik.http.routers.wizarr.entrypoints=websecure"
+      - "traefik.http.routers.wizarr.middlewares=authentik@docker"
+      - "traefik.http.services.wizarr.loadbalancer.server.port=5690"
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - mediacenter
+    volumes:
+      - ${CONFIG_DIR}/wizarr:/data

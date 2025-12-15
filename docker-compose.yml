@@ -20,6 +20,7 @@ include:
   - apps/traefik.yml
   - apps/vaultwarden.yml
   - apps/watchtower.yml
+  - apps/wizarr.yml
 
 networks:
   mediacenter:
