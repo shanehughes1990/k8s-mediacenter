@@ -9,7 +9,7 @@ include:
   # - apps/seerr.yml
   - apps/plex.yml
   - apps/postgresql.yml
-  # - apps/prowlarr.yml
+  - apps/prowlarr.yml
   - apps/radarr.yml
   # - apps/sabnzbd.yml
   # - apps/scrutiny.yml

@@ -11,12 +11,12 @@ services:
       - TP_THEME=plex
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/prowlarr`)"
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.${CLOUDFLARE_ZONE_NAME}`)"
       - "traefik.http.routers.prowlarr.entrypoints=websecure"
+      - "traefik.http.routers.prowlarr.middlewares=authentik@docker"
       - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     volumes:
       - ${CONFIG_DIR}/prowlarr:/config
-      - ./.config/prowlarr/config.xml:/config/config.xml
