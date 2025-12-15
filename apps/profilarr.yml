@@ -1,0 +1,20 @@
+services:
+  profilarr:
+    image: santiagosayshey/profilarr:latest
+    container_name: profilarr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.profilarr.rule=Host(`profilarr.${CLOUDFLARE_ZONE_NAME}`)"
+      - "traefik.http.routers.profilarr.entrypoints=websecure"
+      - "traefik.http.routers.profilarr.middlewares=authentik@docker"
+      - "traefik.http.services.profilarr.loadbalancer.server.port=6868"
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - mediacenter
+    volumes:
+      - ${CONFIG_DIR}/profilarr:/config
