@@ -11,14 +11,14 @@ services:
       - TP_THEME=plex
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.sonarr.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/sonarr`)"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.${CLOUDFLARE_ZONE_NAME}`)"
       - "traefik.http.routers.sonarr.entrypoints=websecure"
+      - "traefik.http.routers.sonarr.middlewares=authentik@docker"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     volumes:
       - ${CONFIG_DIR}/sonarr:/config
-      - ./.config/sonarr/config.xml:/config/config.xml
       - ${TV_SHOWS_DIR}:/data/media/tvshows
       - ${DOWNLOADS_DIR}/sabnzbd:/data/downloads

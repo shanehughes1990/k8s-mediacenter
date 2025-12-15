@@ -13,7 +13,7 @@ include:
   # - apps/radarr.yml
   # - apps/sabnzbd.yml
   # - apps/scrutiny.yml
-  # - apps/sonarr.yml
+  - apps/sonarr.yml
   # - apps/tautulli.yml
   - apps/traefik.yml
   - apps/vaultwarden.yml
