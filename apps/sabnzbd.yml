@@ -11,13 +11,13 @@ services:
       - TP_THEME=plex
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.sabnzbd.rule=Host(`${CLOUDFLARE_ZONE_NAME}`) && PathPrefix(`/sabnzbd`)"
+      - "traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.${CLOUDFLARE_ZONE_NAME}`)"
       - "traefik.http.routers.sabnzbd.entrypoints=websecure"
+      - "traefik.http.routers.sabnzbd.middlewares=authentik@docker"
       - "traefik.http.services.sabnzbd.loadbalancer.server.port=8080"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
       - mediacenter
     volumes:
       - ${CONFIG_DIR}/sabnzbd:/config
-      - ./.config/sabnzbd/sabnzbd.ini:/config/sabnzbd.ini
       - ${DOWNLOADS_DIR}/sabnzbd:/data/downloads

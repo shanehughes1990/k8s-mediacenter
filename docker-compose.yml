@@ -12,7 +12,7 @@ include:
   - apps/prowlarr.yml
   - apps/profilarr.yml
   - apps/radarr.yml
-  # - apps/sabnzbd.yml
+  - apps/sabnzbd.yml
   # - apps/scrutiny.yml
   - apps/sonarr.yml
   # - apps/tautulli.yml
