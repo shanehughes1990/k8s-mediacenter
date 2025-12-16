@@ -4,9 +4,8 @@ services:
     container_name: jellyseerr
     restart: unless-stopped
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
       - TZ=${TZ}
+      - LOG_LEVEL=debug
       - DB_TYPE=postgres
       - DB_HOST=postgresql
       - DB_PORT=5432
@@ -17,7 +16,9 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.jellyseerr.rule=Host(`request.${CLOUDFLARE_ZONE_NAME}`)"
       - "traefik.http.routers.jellyseerr.entrypoints=websecure"
-      - "traefik.http.routers.jellyseerr.middlewares=authentik@docker"
+      - "traefik.http.middlewares.jellyseerr-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.jellyseerr.middlewares=jellyseerr-headers"
+      # - "traefik.http.routers.jellyseerr.middlewares=authentik@docker"
       - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:

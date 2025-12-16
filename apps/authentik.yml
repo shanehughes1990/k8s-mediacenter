@@ -1,6 +1,7 @@
 services:
   authentik-server:
     image: ghcr.io/goauthentik/server:2025.10.2
+    container_name: authentik-server
     restart: unless-stopped
     command: server
     environment:
@@ -27,6 +28,7 @@ services:
 
   authentik-worker:
     image: ghcr.io/goauthentik/server:2025.10.2
+    container_name: authentik-worker
     restart: unless-stopped
     command: worker
     environment:

@@ -7,7 +7,8 @@ include:
   - apps/homarr.yml
   # - apps/organizr.yml
   # - apps/seerr.yml
-  - apps/jellyseerr.yml
+  # - apps/jellyseerr.yml
+  # - apps/overseerr.yml
   - apps/plex.yml
   - apps/postgresql.yml
   - apps/prowlarr.yml

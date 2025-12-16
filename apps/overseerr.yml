@@ -1,0 +1,22 @@
+services:
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.overseerr.rule=Host(`request.${CLOUDFLARE_ZONE_NAME}`)"
+      - "traefik.http.routers.overseerr.entrypoints=websecure"
+      # - "traefik.http.routers.overseerr.middlewares=authentik@docker"
+      - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - mediacenter
+    ports:
+      - "5055:5055"
+    volumes:
+      - ${CONFIG_DIR}/overseerr:/config
