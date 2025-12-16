@@ -12,7 +12,6 @@ include:
   - apps/prowlarr.yml
   - apps/profilarr.yml
   - apps/radarr.yml
-  - apps/recyclarr.yml
   # - apps/sabnzbd.yml
   # - apps/scrutiny.yml
   - apps/sonarr.yml
