@@ -1,0 +1,28 @@
+services:
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DB_TYPE=postgres
+      - DB_HOST=postgresql
+      - DB_PORT=5432
+      - DB_NAME=seerr
+      - DB_USER=${SEERR_POSTGRES_USERNAME}
+      - DB_PASS=${SEERR_POSTGRES_PASSWORD}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyseerr.rule=Host(`request.${CLOUDFLARE_ZONE_NAME}`)"
+      - "traefik.http.routers.jellyseerr.entrypoints=websecure"
+      - "traefik.http.routers.jellyseerr.middlewares=authentik@docker"
+      - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - mediacenter
+    ports:
+      - "5055:5055"
+    volumes:
+      - ${CONFIG_DIR}/jellyseerr:/app/config

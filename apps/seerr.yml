@@ -1,6 +1,7 @@
 services:
+  # TODO: Watch repo for release version
   seerr:
-    image: ghcr.io/seerr-team/seerr:latest
+    image: ghcr.io/seerr-team/seerr:develop
     container_name: seerr
     restart: unless-stopped
     environment:
@@ -17,6 +18,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.seerr.rule=Host(`request.${CLOUDFLARE_ZONE_NAME}`)"
       - "traefik.http.routers.seerr.entrypoints=websecure"
+      # - "traefik.http.routers.seerr.middlewares=authentik@docker"
       - "traefik.http.services.seerr.loadbalancer.server.port=5055"
       - "com.centurylinklabs.watchtower.enable=true"
     networks:
