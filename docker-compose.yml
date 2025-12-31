@@ -5,8 +5,9 @@ include:
   - apps/cloudflare-ddns.yml
   - apps/authentik.yml
   - apps/homarr.yml
+  # - apps/dasharr.yml
   # - apps/organizr.yml
-  # - apps/seerr.yml
+  - apps/seerr.yml
   # - apps/jellyseerr.yml
   # - apps/overseerr.yml
   - apps/plex.yml
