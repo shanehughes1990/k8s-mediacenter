@@ -1,0 +1,72 @@
+/* Plex-inspired Theme (Mobile Optimized) */
+
+:root {
+  /* Plex Color Palette */
+  --plex-bg: #1f1f1f;
+  --plex-card: #282a2d;
+  --plex-orange: #e5a00d;
+  --plex-text: #e5e5e5;
+  --plex-header: #171717;
+  
+  /* Override Mantine Primary Colors */
+  --mantine-primary-color-filled: var(--plex-orange);
+  --mantine-primary-color-filled-hover: #c4890b;
+  --mantine-primary-color-light: rgba(229, 160, 13, 0.1);
+}
+
+/* Mobile Specific Adjustments */
+@media (max-width: 768px) {
+  
+  /* Main Background */
+  body, #root, .mantine-AppShell-main {
+    background-color: var(--plex-bg) !important;
+  }
+
+  /* Header & Navigation */
+  header.mantine-AppShell-header {
+    background-color: var(--plex-header) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  }
+
+  /* Cards / Tiles */
+  .grid-stack-item-content, 
+  .mantine-Paper-root {
+    background-color: var(--plex-card) !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+  }
+
+  /* Typography */
+  .mantine-Text-root {
+    color: var(--plex-text) !important;
+    font-family: 'Open Sans', sans-serif !important;
+  }
+  
+  h1, h2, h3 {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+  }
+
+  /* Buttons & Interactive Elements */
+  .mantine-Button-root {
+    background-color: var(--plex-orange) !important;
+    color: #000000 !important; /* Black text on orange for contrast */
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Search Bar */
+  .mantine-TextInput-input {
+    background-color: rgba(0,0,0,0.2) !important;
+    border-color: transparent !important;
+    color: white !important;
+  }
+  
+  /* Hide scrollbars for cleaner mobile look */
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+}

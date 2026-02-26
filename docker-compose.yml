@@ -1,28 +1,24 @@
 name: mediacenter
 
 include:
+  - apps/authentik.yml
   - apps/cloud-sql-proxy.yml
   - apps/cloudflare-ddns.yml
-  - apps/authentik.yml
   - apps/homarr.yml
-  # - apps/dasharr.yml
-  # - apps/organizr.yml
-  - apps/seerr.yml
-  # - apps/jellyseerr.yml
-  # - apps/overseerr.yml
   - apps/plex.yml
   - apps/postgresql.yml
-  - apps/prowlarr.yml
   - apps/profilarr.yml
+  - apps/prowlarr.yml
   - apps/radarr.yml
   - apps/sabnzbd.yml
-  # - apps/scrutiny.yml
+  - apps/seerr.yml
   - apps/sonarr.yml
-  # - apps/tautulli.yml
   - apps/traefik.yml
   - apps/vaultwarden.yml
   - apps/watchtower.yml
   - apps/wizarr.yml
+  # - apps/scrutiny.yml
+  # - apps/tautulli.yml
 
 networks:
   mediacenter:
