@@ -1,72 +1,227 @@
-/* Plex-inspired Theme (Mobile Optimized) */
-
 :root {
-  /* Plex Color Palette */
-  --plex-bg: #1f1f1f;
-  --plex-card: #282a2d;
-  --plex-orange: #e5a00d;
-  --plex-text: #e5e5e5;
-  --plex-header: #171717;
-  
-  /* Override Mantine Primary Colors */
-  --mantine-primary-color-filled: var(--plex-orange);
-  --mantine-primary-color-filled-hover: #c4890b;
-  --mantine-primary-color-light: rgba(229, 160, 13, 0.1);
+  --plex-bg: #111317;
+  --plex-bg-elevated: #181b20;
+  --plex-surface: #1f232a;
+  --plex-surface-2: #272c34;
+  --plex-border: rgba(255, 255, 255, 0.08);
+  --plex-border-strong: rgba(255, 255, 255, 0.16);
+  --plex-text: #e8eaed;
+  --plex-text-muted: #a4adb7;
+  --plex-accent: #e5a00d;
+  --plex-accent-hover: #f0ae2a;
+  --plex-accent-pressed: #c38809;
+  --plex-ring: rgba(229, 160, 13, 0.45);
+
+  --mantine-primary-color-filled: var(--plex-accent);
+  --mantine-primary-color-filled-hover: var(--plex-accent-hover);
+  --mantine-primary-color-light: rgba(229, 160, 13, 0.16);
 }
 
-/* Mobile Specific Adjustments */
+html,
+body,
+#root,
+[class*="mantine-AppShell-main"] {
+  background: var(--plex-bg) !important;
+  color: var(--plex-text) !important;
+}
+
+body,
+[class*="mantine-Text-root"],
+[class*="mantine-Title-root"] {
+  color: var(--plex-text) !important;
+  font-family: Inter, "Open Sans", "Segoe UI", Roboto, sans-serif !important;
+}
+
+[class*="mantine-AppShell-header"],
+[class*="mantine-AppShell-navbar"],
+[class*="mantine-AppShell-aside"] {
+  background: linear-gradient(180deg, #171a1f 0%, #13161b 100%) !important;
+  border-color: var(--plex-border) !important;
+}
+
+[class*="mantine-Card-root"],
+[class*="mantine-Paper-root"],
+.grid-stack-item-content {
+  background: linear-gradient(180deg, var(--plex-surface) 0%, #1b1f26 100%) !important;
+  border: 1px solid var(--plex-border) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35) !important;
+  color: var(--plex-text) !important;
+}
+
+[class*="mantine-Card-root"]:hover,
+[class*="mantine-Paper-root"]:hover,
+.grid-stack-item-content:hover {
+  border-color: var(--plex-border-strong) !important;
+}
+
+[class*="mantine-Badge-root"] {
+  background: rgba(17, 19, 23, 0.9) !important;
+  border: 1px solid var(--plex-border) !important;
+  color: var(--plex-text) !important;
+}
+
+[class*="mantine-Button-root"] {
+  border-radius: 10px !important;
+  border-color: transparent !important;
+  transition: background-color 140ms ease, border-color 140ms ease, transform 140ms ease !important;
+}
+
+[class*="mantine-Button-root"][data-variant="filled"],
+[class*="mantine-Button-root"].mantine-focus-auto {
+  background: var(--plex-accent) !important;
+  color: #111317 !important;
+  font-weight: 700 !important;
+}
+
+[class*="mantine-Button-root"][data-variant="filled"]:hover {
+  background: var(--plex-accent-hover) !important;
+}
+
+[class*="mantine-Button-root"][data-variant="subtle"],
+[class*="mantine-Button-root"][data-variant="default"] {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid var(--plex-border) !important;
+  color: var(--plex-text) !important;
+}
+
+[class*="mantine-ActionIcon-root"],
+[class*="mantine-UnstyledButton-root"] {
+  color: var(--plex-text) !important;
+}
+
+[class*="mantine-Input-input"],
+[class*="mantine-Input-wrapper"] input,
+[class*="mantine-Select-input"],
+[class*="mantine-Textarea-input"],
+[class*="mantine-MultiSelect-input"] {
+  background: var(--plex-bg-elevated) !important;
+  border: 1px solid var(--plex-border) !important;
+  color: var(--plex-text) !important;
+}
+
+[class*="mantine-Input-input"]::placeholder,
+[class*="mantine-Textarea-input"]::placeholder {
+  color: var(--plex-text-muted) !important;
+}
+
+[class*="mantine-Menu-dropdown"],
+[class*="mantine-Popover-dropdown"],
+[class*="mantine-Combobox-dropdown"],
+[class*="mantine-Modal-content"] {
+  background: var(--plex-bg-elevated) !important;
+  border: 1px solid var(--plex-border-strong) !important;
+  color: var(--plex-text) !important;
+}
+
+[class*="mantine-Table-root"],
+[class*="mantine-Table-table"] {
+  color: var(--plex-text) !important;
+}
+
+[class*="mantine-Divider-root"] {
+  border-color: var(--plex-border) !important;
+}
+
+.grid-stack > .grid-stack-item > .grid-stack-item-content {
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+a,
+[class*="mantine-Anchor-root"] {
+  color: #f2b43a !important;
+}
+
+a:hover,
+[class*="mantine-Anchor-root"]:hover {
+  color: #ffca67 !important;
+}
+
+[class*="mantine-focus-auto"]:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--plex-ring) !important;
+  outline-offset: 1px !important;
+}
+
 @media (max-width: 768px) {
-  
-  /* Main Background */
-  body, #root, .mantine-AppShell-main {
-    background-color: var(--plex-bg) !important;
+  html,
+  body,
+  #root,
+  [class*="mantine-AppShell-main"] {
+    background: radial-gradient(circle at top, #1a1f27 0%, #111317 50%, #0d0f13 100%) !important;
   }
 
-  /* Header & Navigation */
-  header.mantine-AppShell-header {
-    background-color: var(--plex-header) !important;
-    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  [class*="mantine-AppShell-header"] {
+    min-height: 56px !important;
+    backdrop-filter: blur(6px);
+    background: rgba(17, 19, 23, 0.92) !important;
+    border-bottom: 1px solid var(--plex-border) !important;
   }
 
-  /* Cards / Tiles */
-  .grid-stack-item-content, 
-  .mantine-Paper-root {
-    background-color: var(--plex-card) !important;
-    border-radius: 8px !important;
-    border: 1px solid rgba(255,255,255,0.05) !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+  [class*="mantine-Card-root"],
+  [class*="mantine-Paper-root"],
+  .grid-stack-item-content {
+    border-radius: 12px !important;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.34) !important;
   }
 
-  /* Typography */
-  .mantine-Text-root {
-    color: var(--plex-text) !important;
-    font-family: 'Open Sans', sans-serif !important;
-  }
-  
-  h1, h2, h3 {
-    color: #ffffff !important;
-    font-weight: 600 !important;
+  [class*="mantine-Title-root"] {
+    letter-spacing: 0.01em;
   }
 
-  /* Buttons & Interactive Elements */
-  .mantine-Button-root {
-    background-color: var(--plex-orange) !important;
-    color: #000000 !important; /* Black text on orange for contrast */
-    font-weight: 700 !important;
+  [class*="mantine-Button-root"] {
+    min-height: 40px;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
   }
 
-  /* Search Bar */
-  .mantine-TextInput-input {
-    background-color: rgba(0,0,0,0.2) !important;
-    border-color: transparent !important;
-    color: white !important;
+  [class*="mantine-Input-input"],
+  [class*="mantine-Textarea-input"],
+  [class*="mantine-Select-input"],
+  [class*="mantine-MultiSelect-input"] {
+    min-height: 40px;
+    font-size: 0.95rem !important;
+    border-radius: 10px !important;
   }
-  
-  /* Hide scrollbars for cleaner mobile look */
-  ::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
+
+  .grid-stack > .grid-stack-item > .grid-stack-item-content {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 480px) {
+  [class*="mantine-AppShell-main"] {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  [class*="mantine-Card-root"],
+  [class*="mantine-Paper-root"],
+  .grid-stack-item-content {
+    border-radius: 10px !important;
   }
 }

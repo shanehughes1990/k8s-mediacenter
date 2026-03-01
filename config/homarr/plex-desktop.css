@@ -1,0 +1,62 @@
+@media (min-width: 769px) {
+  :root {
+    --plex-desktop-panel: #171b22;
+    --plex-desktop-card: #1e232c;
+    --plex-desktop-hover: #252b36;
+    --plex-desktop-border: rgba(255, 255, 255, 0.09);
+  }
+
+  [class*="mantine-AppShell-main"] {
+    padding: 18px 20px !important;
+    background: radial-gradient(circle at top left, #1b2028 0%, #111317 55%, #0d0f13 100%) !important;
+  }
+
+  [class*="mantine-AppShell-header"] {
+    background: linear-gradient(180deg, #171b22 0%, #141920 100%) !important;
+    border-bottom: 1px solid var(--plex-desktop-border) !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  [class*="mantine-AppShell-navbar"] {
+    background: linear-gradient(180deg, #151a21 0%, #12161c 100%) !important;
+    border-right: 1px solid var(--plex-desktop-border) !important;
+  }
+
+  [class*="mantine-Card-root"],
+  [class*="mantine-Paper-root"],
+  .grid-stack-item-content {
+    background: linear-gradient(180deg, var(--plex-desktop-card) 0%, #1a1f27 100%) !important;
+    border: 1px solid var(--plex-desktop-border) !important;
+    border-radius: 14px !important;
+  }
+
+  [class*="mantine-Card-root"]:hover,
+  [class*="mantine-Paper-root"]:hover,
+  .grid-stack-item-content:hover {
+    background: linear-gradient(180deg, var(--plex-desktop-hover) 0%, #1e242e 100%) !important;
+    transform: translateY(-1px);
+  }
+
+  [class*="mantine-Button-root"][data-variant="filled"] {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12), 0 6px 16px rgba(229, 160, 13, 0.2) !important;
+  }
+
+  [class*="mantine-Button-root"][data-variant="default"],
+  [class*="mantine-Button-root"][data-variant="subtle"] {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-color: var(--plex-desktop-border) !important;
+  }
+
+  [class*="mantine-Table-thead"] tr,
+  [class*="mantine-Table-th"] {
+    background: #151922 !important;
+  }
+
+  [class*="mantine-Table-tr"]:hover {
+    background: rgba(255, 255, 255, 0.03) !important;
+  }
+
+  .grid-stack > .grid-stack-item > .grid-stack-item-content {
+    scrollbar-width: thin;
+  }
+}
