@@ -44,6 +44,9 @@ services:
       POSTGRESQL_APP_USERNAME_5: ${AUTHENTIK_POSTGRES_USERNAME}
       POSTGRESQL_APP_PASSWORD_5: ${AUTHENTIK_POSTGRES_PASSWORD}
       POSTGRESQL_APP_DATABASES_5: authentik
+      POSTGRESQL_APP_USERNAME_6: ${VAULTWARDEN_POSTGRES_USERNAME}
+      POSTGRESQL_APP_PASSWORD_6: ${VAULTWARDEN_POSTGRES_PASSWORD}
+      POSTGRESQL_APP_DATABASES_6: vaultwarden
     volumes:
       - ../config/postgres-init/ensure-databases.sh:/ensure-databases.sh
     command: ["bash", "/ensure-databases.sh"]

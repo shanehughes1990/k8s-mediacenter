@@ -1,12 +1,19 @@
 services:
   profilarr:
-    image: santiagosayshey/profilarr:latest
+    image: ghcr.io/dictionarry-hub/profilarr:2
     container_name: profilarr
     restart: unless-stopped
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - ORIGIN=https://profilarr.${CLOUDFLARE_ZONE_NAME}
+      - PROFILARR_API_KEY=${PROFILARR_API_KEY}
+      - PARSER_HOST=profilarr-parser
+      - PARSER_PORT=5000
+    depends_on:
+      profilarr-parser:
+        condition: service_healthy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.profilarr.rule=Host(`profilarr.${CLOUDFLARE_ZONE_NAME}`)"
@@ -17,4 +24,12 @@ services:
     networks:
       - mediacenter
     volumes:
-      - ${CONFIG_DIR}/profilarr:/config
+      - ${CONFIG_DIR}/profilarr-v2:/config
+  profilarr-parser:
+    image: ghcr.io/dictionarry-hub/profilarr-parser:2
+    container_name: profilarr-parser
+    restart: unless-stopped
+    expose:
+      - "5000"
+    networks:
+      - mediacenter

@@ -5,6 +5,7 @@ include:
   - apps/cloud-sql-proxy.yml
   - apps/cloudflare-ddns.yml
   - apps/homarr.yml
+  - apps/nzbfast.yml
   - apps/plex.yml
   - apps/postgresql.yml
   - apps/profilarr.yml
@@ -13,12 +14,12 @@ include:
   - apps/sabnzbd.yml
   - apps/seerr.yml
   - apps/sonarr.yml
+  - apps/tautulli.yml
   - apps/traefik.yml
   - apps/vaultwarden.yml
   - apps/watchtower.yml
   - apps/wizarr.yml
   # - apps/scrutiny.yml
-  # - apps/tautulli.yml
 
 networks:
   mediacenter:
