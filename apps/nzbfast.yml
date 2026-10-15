@@ -1,0 +1,23 @@
+services:
+  nzbfast:
+    image: nzbfast/nzbfast:latest
+    container_name: nzbfast
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - NZBFAST_OUT=/data/downloads
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nzbfast.rule=Host(`nzbfast.${CLOUDFLARE_ZONE_NAME}`)"
+      - "traefik.http.routers.nzbfast.entrypoints=websecure"
+      - "traefik.http.routers.nzbfast.middlewares=authentik@docker"
+      - "traefik.http.services.nzbfast.loadbalancer.server.port=6789"
+      - "com.centurylinklabs.watchtower.enable=true"
+    networks:
+      - mediacenter
+    volumes:
+      - ${CONFIG_DIR}/nzbfast:/config
+      - ${CONFIG_DIR}/nzbfast-watch:/watch
+      - ${DOWNLOADS_DIR}/nzbfast:/data/downloads
