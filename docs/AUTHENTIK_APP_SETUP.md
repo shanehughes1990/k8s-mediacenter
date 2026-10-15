@@ -1,100 +1,103 @@
-# Adding a New Proxied Application to Authentik
+# 🪪 Let's tuck a new app behind Authentik
 
-This guide explains how to secure an application using Authentik's "Proxy" method (ForwardAuth). This is used for applications that **do not** support OIDC/SAML natively (like Sonarr, Radarr, Prowlarr) or when you want to enforce authentication *before* the request even reaches the application.
+Hooray, a new app! This guide walks through Authentik's Proxy method (ForwardAuth) so the login happens before the request ever reaches the app.
 
-## When to use Proxy vs OIDC
+It is the happy path for apps that do not speak OIDC or SAML themselves, such as Sonarr, Radarr, and Prowlarr. It is also lovely when you want the public internet to meet Authentik first.
 
-| Method | Use Case | Pros | Cons |
-| :--- | :--- | :--- | :--- |
-| **OIDC / SAML** | Apps with built-in SSO support (Homarr, Plex, Grafana) | Seamless login, app knows user identity, cleaner integration. | Requires app support. |
-| **Proxy (ForwardAuth)** | Apps without SSO (Sonarr, Radarr) or simple static sites | Works with *anything*, protects the app completely from public internet. | App might not know *who* logged in (unless it reads headers). |
+## Proxy or OIDC? Both are wonderful
+
+| Method | Lovely for | Why it feels good | What to watch |
+| --- | --- | --- | --- |
+| **OIDC / SAML** | Apps with built-in SSO, such as Homarr, Plex, and Grafana | The login is seamless and the app knows who you are. | The app has to support it. |
+| **Proxy (ForwardAuth)** | Apps without SSO, such as Sonarr and Radarr, and simple sites | It wraps anything, and the app stays off the public internet until Authentik says hello. | The app only learns who logged in if it reads the forwarded headers. |
 
 ---
 
-## Step 1: Docker / Traefik Configuration
+## Step 1: Say hello in Docker and Traefik
 
-You need to update the application's `docker-compose.yml` entry to route traffic through the Authentik middleware.
+Add the app's Traefik labels so traffic passes through the Authentik middleware.
 
-**Required Changes:**
-1.  **Domain Rule**: Ensure it uses a specific subdomain (e.g., `sonarr.tecsharp.com`).
-2.  **Middleware**: Add the `authentik@docker` middleware label.
+1. Give it a host rule on its own subdomain, such as `sonarr.${CLOUDFLARE_ZONE_NAME}`.
+2. Add the `authentik@docker` middleware label.
 
-**Example (`apps/sonarr.yml`):**
+`apps/sonarr.yml` already looks like this:
+
 ```yaml
     labels:
       - "traefik.enable=true"
-      # 1. Define the Host rule
-      - "traefik.http.routers.sonarr.rule=Host(`sonarr.tecsharp.com`)"
+      - "traefik.http.routers.sonarr.rule=Host(`sonarr.${CLOUDFLARE_ZONE_NAME}`)"
       - "traefik.http.routers.sonarr.entrypoints=websecure"
-      # 2. Add the Authentik Middleware (CRITICAL)
       - "traefik.http.routers.sonarr.middlewares=authentik@docker"
       - "traefik.http.services.sonarr.loadbalancer.server.port=8989"
 ```
 
-*Note: The `authentik@docker` middleware is defined globally in `apps/authentik.yml`.*
+The `authentik@docker` middleware is defined on `authentik-server` in `apps/authentik.yml`. You get to reuse it everywhere. How nice!
 
 ---
 
-## Step 2: Create the Provider in Authentik
+## Step 2: Create the provider
 
-The Provider tells Authentik *how* to handle the request (e.g., where to redirect, what flow to use).
+The provider tells Authentik how to greet this app: where to send people, and which flow to use.
 
-1.  Go to **Applications** -> **Providers**.
-2.  Click **Create**.
-3.  Select **Proxy Provider**.
-4.  **Name**: Name of the app (e.g., `Sonarr`).
-5.  **Authorization flow**: Select `default-provider-authorization-implicit-consent` (Recommended: skips the "Authorize Application" approval screen).
-6.  **External Host**: The full URL of the app (e.g., `https://sonarr.tecsharp.com`).
-    *   *Important: Must match the Traefik Host rule exactly.*
-7.  **Internal Host**: Leave blank (Traefik handles the routing).
-8.  Click **Finish**.
-
----
-
-## Step 3: Create the Application in Authentik
-
-The Application binds the Provider to specific Users/Groups (Policies).
-
-1.  Go to **Applications** -> **Applications**.
-2.  Click **Create**.
-3.  **Name**: Name of the app (e.g., `Sonarr`).
-4.  **Slug**: `sonarr` (URL friendly name).
-5.  **Provider**: Select the Provider you created in Step 2.
-6.  **Policy Engine Mode**: Select **ANY** (Allows access if user matches *at least one* bound group).
-7.  Click **Create**.
-
-### Bind Permissions (Groups)
-1.  Click on the newly created Application name.
-2.  Go to the **Policy / Group Bindings** tab.
-3.  Click **Bind Group**.
-4.  Select the groups allowed to access this app (e.g., `media-admins`, `media-power-users`).
-    *   *If you bind no groups, it might default to allowing everyone or no one depending on global settings. Explicit binding is safer.*
+1. Go to **Applications** → **Providers**.
+2. Click **Create**.
+3. Select **Proxy Provider**.
+4. **Name**: the app name, such as `Sonarr`.
+5. **Authorization flow**: `default-provider-authorization-implicit-consent`. This skips the extra "Authorize Application" screen.
+6. **External Host**: the full URL, such as `https://sonarr.example.com` when `CLOUDFLARE_ZONE_NAME` is `example.com`. It needs to match the Traefik Host rule exactly.
+7. **Internal Host**: leave this blank. Traefik already knows the way.
+8. Click **Finish**.
 
 ---
 
-## Step 4: Update the Outpost (CRITICAL STEP)
+## Step 3: Create the application
 
-Authentik's "Embedded Outpost" is the actual worker that processes the proxy requests. **It does not automatically know about new Proxy applications.** You must explicitly add them.
+The application ties that provider to the people and groups who get to come in.
 
-1.  Go to **Applications** -> **Outposts**.
-2.  Locate the **authentik Embedded Outpost**.
-3.  Click **Edit** (Pencil Icon).
-4.  **Applications**: Locate your new application (e.g., `Sonarr`) in the list.
-5.  **Select it** (Ensure existing apps remain selected by holding Ctrl/Cmd).
-6.  Click **Update**.
+1. Go to **Applications** → **Applications**.
+2. Click **Create**.
+3. **Name**: the app name, such as `Sonarr`.
+4. **Slug**: `sonarr`.
+5. **Provider**: the provider from Step 2.
+6. **Policy Engine Mode**: **ANY**. A person gets in when they match at least one bound group.
+7. Click **Create**.
 
-*If you skip this step, you will see a broken Authentik error page or "Not Found" when visiting the app.*
+### Invite the right groups
+
+1. Open the new application.
+2. Open the **Policy / Group Bindings** tab.
+3. Click **Bind Group**.
+4. Pick the groups who belong here, such as `media-admins` and `media-power-users`.
+
+Bind the groups on purpose. An application with no bindings follows the global default, and an explicit list is the cozier choice.
 
 ---
 
-## Step 5: Verify
+## Step 4: Tell the outpost about the new friend
 
-1.  Restart the application container (to apply Traefik labels):
-    ```bash
-    docker compose up -d sonarr
-    ```
-2.  Visit `https://sonarr.tecsharp.com`.
-3.  **Expected Behavior**:
-    *   If not logged in -> Redirects to Authentik Login.
-    *   If logged in as Allowed User -> Loads Sonarr.
-    *   If logged in as Restricted User -> Shows "Permission Denied".
+The embedded outpost is the worker that actually handles proxy requests. It does not notice a new proxy application on its own, so this step is the important one.
+
+1. Go to **Applications** → **Outposts**.
+2. Find **authentik Embedded Outpost**.
+3. Click **Edit**.
+4. In **Applications**, find the new app, such as `Sonarr`.
+5. Select it, and keep the apps that are already selected. Hold Ctrl or Cmd so the existing ones stay highlighted.
+6. Click **Update**.
+
+Skip this and the app answers with an Authentik error page or "Not Found". A tiny click here saves that whole adventure.
+
+---
+
+## Step 5: Take it for a spin
+
+Restart the app container so Traefik picks up the labels:
+
+```bash
+docker compose up -d sonarr
+```
+
+Visit `https://sonarr.${CLOUDFLARE_ZONE_NAME}` and enjoy the result:
+
+* Signed out: a cheerful redirect to the Authentik login.
+* Signed in, and allowed: Sonarr opens right up.
+* Signed in, and not in a bound group: Authentik shows "Permission Denied".

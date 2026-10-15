@@ -1,36 +1,28 @@
-# Homarr Plex Theme Pack
+# 🎨 Homarr Plex theme pack
 
-This folder now contains a full Plex-style theme pack tailored for current Homarr builds.
+Oh, this folder is fun. It is a full Plex-style theme pack made for current Homarr builds: the same warm dark surfaces, the same accent glow, and a layout that feels right on a phone and on a big screen.
 
-## Files
+## The files
 
-- `plex-mobile.css`
-  - Core Plex visual system
-  - Mobile-first overrides
-  - Works on its own
+* `plex-mobile.css` is the heart of the look. It holds the Plex visual system and the mobile-first overrides, and it is perfectly happy on its own.
+* `plex-desktop.css` adds desktop-only refinements at `min-width: 769px`. It loves sitting on top of `plex-mobile.css`.
+* `plex-complete.css` is the welcome mat. It imports `plex-mobile.css` and then `plex-desktop.css`.
 
-- `plex-desktop.css`
-  - Desktop-only refinements (`min-width: 769px`)
-  - Intended to layer on top of `plex-mobile.css`
+## How to wear it
 
-- `plex-complete.css`
-  - Entry file that imports both `plex-mobile.css` and `plex-desktop.css`
+Pick the outfit that fits the day:
 
-## Recommended usage
+1. **Just the core look.** Load `plex-mobile.css` on its own.
+2. **The full outfit.** Load `plex-complete.css`, or load `plex-mobile.css` and then `plex-desktop.css`.
 
-Use one of these approaches:
+## A note Homarr will thank you for
 
-1. **Single file:** Load `plex-mobile.css` only.
-2. **Best parity:** Load `plex-complete.css` (or load `plex-mobile.css` then `plex-desktop.css`).
+Current Homarr keeps board custom CSS in the database, in `board.custom_css`.
 
-## Important Homarr note
+Paste the CSS straight into the board settings editor when that is how you apply it. When you inject CSS through your own mount, reverse proxy, or static path, point that path at these files and let them shine.
 
-Current Homarr stores board custom CSS in the database (`board.custom_css`).
-If you apply CSS through the board settings editor, paste the CSS content directly.
-If you apply CSS via your own mount/reverse-proxy/static injection path, use these files directly.
+## Little dials you can turn
 
-## Tuning tips
-
-- Accent color is controlled by `--plex-accent` in `plex-mobile.css`.
-- Surface/background tones are controlled by the `--plex-*` variables near the top of `plex-mobile.css`.
-- If a widget needs special styling, add a custom CSS class in widget advanced options and target it from these files.
+* `--plex-accent` in `plex-mobile.css` is the accent color. Give it a new value and the whole theme follows.
+* The `--plex-*` variables near the top of `plex-mobile.css` set the surfaces and backgrounds.
+* A widget that wants its own flair can take a custom CSS class in its advanced options. Target that class from these files.
