@@ -1,7 +1,3 @@
----
-kind: agents
----
-
 # 🍿 Mediacenter agent guidelines
 
 This repo is the Docker Compose stack for the home media center. Write docs in a warm, bubbly voice. Keep service files exact.
