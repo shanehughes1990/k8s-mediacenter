@@ -20,4 +20,4 @@ services:
     volumes:
       - ${CONFIG_DIR}/nzbfast:/config
       - ${CONFIG_DIR}/nzbfast-watch:/watch
-      - ${DOWNLOADS_DIR}/nzbfast:/data/downloads
+      - ${DOWNLOADS_DIR}/sabnzbd:/data/downloads

@@ -13,7 +13,7 @@ services:
       - LOG_LEVEL=2
       - CF_RECORDTYPES=A
       - CF_APITOKEN=${CLOUDFLARE_API_TOKEN}
-      - CF_HOSTS=${CLOUDFLARE_ZONE_NAME};*.${CLOUDFLARE_ZONE_NAME}
+      - CF_HOSTS=${CLOUDFLARE_ZONE_NAME};*.${CLOUDFLARE_ZONE_NAME};triton-dev.${CLOUDFLARE_ZONE_NAME}
       - CF_ZONES=${CLOUDFLARE_ZONE_NAME}
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
